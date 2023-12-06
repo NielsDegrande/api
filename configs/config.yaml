@@ -1,0 +1,19 @@
+# Application wide config.
+
+# Used to identify if the application runs on a local or deployed environment.
+environment: ${ENVIRONMENT}
+
+# Database configuration.
+database:
+  dialect: ${DB_DIALECT}
+  host: ${DB_HOST}
+  port: ${DB_PORT}
+  db_name: ${DB_NAME}
+  username: ${DB_USER}
+  password: ${DB_PASSWORD}
+  unix_socket_path: ${INSTANCE_UNIX_SOCKET}
+
+# GCS configuration.
+gcs:
+  bucket_name: ${GCS_BUCKET_NAME}
+  expiration_in_minutes: 15

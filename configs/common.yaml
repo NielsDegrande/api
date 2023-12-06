@@ -1,0 +1,4 @@
+# Config for the common part of the application.
+
+common:
+  database_schema: common

@@ -1,0 +1,22 @@
+# To run tests localy, use: docker compose up --exit-code-from client
+version: "3.4"
+services:
+  api:
+    image: api
+    environment:
+      - DB_DIALECT=postgresql
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_NAME=db
+      - DB_USER=user
+      - DB_PASSWORD=password
+  client:
+    image: alpine
+    depends_on:
+      - api
+    volumes:
+      - ${PWD}/client:/client
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/bin/sleep 30 && chmod +x /client/client_script.sh && /client/client_script.sh"

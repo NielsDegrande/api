@@ -1,0 +1,4 @@
+# Config for the sample part of the application.
+
+sample:
+  database_schema: sample

@@ -1,0 +1,14 @@
+.cache
+.direnv
+.env
+.github
+.ruff_cache
+.vscode
+backups
+data
+weaviate_backups
+test-reports
+venv
+weaviate_backups
+# Remove this when building the weaviate image.
+weaviate_data
