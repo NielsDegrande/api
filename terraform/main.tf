@@ -92,7 +92,7 @@ resource "google_artifact_registry_repository" "artifact_repository" {
 
 resource "null_resource" "docker_build_api" {
   provisioner "local-exec" {
-    command = "docker build --file ../api.Dockerfile --target base --tag api --cache-from=api-bare --cache-from=api --build-arg BUILDKIT_INLINE_CACHE=1 --platform linux/amd64 ${path.module}"
+    command = "docker build --file ../Dockerfile --target base --tag api --cache-from=api-bare --cache-from=api --build-arg BUILDKIT_INLINE_CACHE=1 --platform linux/amd64 ${path.module}"
   }
 
   triggers = {

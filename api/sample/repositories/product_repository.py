@@ -51,16 +51,23 @@ def _get_products(session: Session) -> list[Products]:
     return session.query(Products).all()
 
 
-def read_product(product_id: int | None) -> list[Product]:
-    """Read products, return all products if ID is None.
+def read_products() -> list[Product]:
+    """Read products.
 
-    :param product_id: ID of the product to read.
-    :return: Matching products.
+    :return: All products.
     """
     with database_session() as session:
-        if product_id:
-            return [orm_to_pydantic(_get_product_by_id(product_id, session), Product)]
         return [orm_to_pydantic(product, Product) for product in _get_products(session)]
+
+
+def read_product(product_id: int) -> Product:
+    """Read product by ID.
+
+    :param product_id: ID of the product to read.
+    :return: Matching product.
+    """
+    with database_session() as session:
+        return orm_to_pydantic(_get_product_by_id(product_id, session), Product)
 
 
 def update_product(

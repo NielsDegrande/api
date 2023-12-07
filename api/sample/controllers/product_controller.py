@@ -13,10 +13,16 @@ sample_router = APIRouter(
 
 
 @sample_router.get("")
+async def get_products() -> list[Product]:
+    """Get all products.
+
+    :return: All products.
+    """
+    return await product_service.get_products()
+
+
 @sample_router.get("/{product_id}")
-async def get_product(
-    product_id: int | None = None,
-) -> list[Product]:
+async def get_product(product_id: int) -> Product:
     """Get a single product.
 
     :param product_id: ID of the product to retrieve.

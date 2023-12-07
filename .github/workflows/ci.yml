@@ -25,3 +25,6 @@ jobs:
 
       - name: Check API is responding
         run: make run_api_test
+
+      - name: Check migrations
+        run: make run_migration_test

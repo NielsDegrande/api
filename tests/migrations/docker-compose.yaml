@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db_migration_test:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+  client:
+    build:
+      context: ../../
+      target: base
+      dockerfile: Dockerfile
+    environment:
+      DB_DIALECT: postgresql
+      DB_HOST: db_migration_test
+      DB_PORT: 5432
+      DB_NAME: db
+      DB_USER: postgres
+      DB_PASSWORD: password
+    depends_on:
+      - db_migration_test
+    entrypoint: /bin/sh
+    command:
+      - "-c"
+      - "/bin/sleep 10 && alembic upgrade head && alembic downgrade base"

@@ -12,7 +12,7 @@ class Product(BaseModel):
     :param price: Product price.
     """
 
-    product_id: int | None
+    product_id: int | None = None
     product_name: str
     color: str
     price: int = Field(ge=0)
