@@ -6,14 +6,14 @@ from typing import Generator, TypeVar
 
 from box import Box
 from pydantic import BaseModel
-from sqlalchemy import Engine, create_engine, engine
-from sqlalchemy.orm import Session, scoped_session, sessionmaker
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
 from api.common.orm.base import Base
 from api.config import config
 
 
-def create_connection_string(db_config: Box) -> str:
+def create_connection_string(db_config: Box = config.database) -> str:
     """Create the environment specific connection string.
 
     :param db_config: Database configuration.
@@ -36,39 +36,14 @@ def create_connection_string(db_config: Box) -> str:
     )
 
 
-def create_connection_url(db_config: Box) -> engine.url.URL:
-    """Create the environment specific connection string.
-
-    :param db_config: Database configuration.
-    :return: SQLAlchemy connection URL.
-    """
-    # Non-empty environment indicates we run on a hosted environment.
-    if config.environment:
-        return engine.url.URL.create(
-            drivername=db_config.dialect,
-            username=db_config.username,
-            password=db_config.password,
-            database=db_config.db_name,
-            query={"unix_sock": db_config.unix_socket_path},
-        )
-    # Else, return the local database connection string.
-    return engine.url.URL.create(
-        drivername=db_config.dialect,
-        username=db_config.username,
-        password=db_config.password,
-        host=db_config.host,
-        port=db_config.port,
-        database=db_config.db_name,
-    )
-
-
 @cache
-def _create_engine() -> Engine:
-    """Create a SQLAlchemy engine.
+def _get_session_factory() -> sessionmaker:
+    """Create a session factory.
 
-    :return: SQLAlchemy engine for the database.
+    :return: SQLAlchemy session factory.
     """
-    return create_engine(create_connection_url(db_config=config.database))
+    engine = create_engine(create_connection_string())
+    return sessionmaker(bind=engine)
 
 
 @contextmanager
@@ -77,7 +52,8 @@ def database_session() -> Generator[Session, None, None]:
 
     :yield: Newly created SQLAlchemy session.
     """
-    session = ScopedSession()
+    factory = _get_session_factory()
+    session = factory()
     try:
         yield session
         session.commit()
@@ -116,7 +92,3 @@ def pydantic_to_orm(
     :return: the ORM object.
     """
     return orm_class(**pydantic_object.model_dump())
-
-
-session_factory = sessionmaker(bind=_create_engine())
-ScopedSession = scoped_session(session_factory=session_factory)

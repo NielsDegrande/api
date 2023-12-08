@@ -28,7 +28,7 @@ install_dev: install_poetry
 .PHONY: build_base_bare
 build_base_bare:
 	docker build \
-		--file api.Dockerfile \
+		--file Dockerfile \
 		--target base_bare \
 		--tag api-bare \
 		--cache-from=api-bare \
@@ -39,33 +39,32 @@ build_base_bare:
 .PHONY: build_base
 build_base:
 	docker build \
-		--file api.Dockerfile \
+		--file Dockerfile \
 		--target base \
 		--tag api \
+		--cache-from=api-bare \
+		--cache-from=api \
+		--build-arg BUILDKIT_INLINE_CACHE=1 \
+		${PWD}
+
+## build_base_amd: Build the base image for AMD64 architecture.
+.PHONY: build_base_amd
+build_base_amd:
+	docker build \
+		--file Dockerfile \
+		--target base \
+		--tag api_amd \
 		--cache-from=api-bare \
 		--cache-from=api \
 		--build-arg BUILDKIT_INLINE_CACHE=1 \
 		--platform linux/amd64 \
 		${PWD}
 
-## build_base_arm: Build the base image for ARM architecture.
-.PHONY: build_base_arm
-build_base_arm:
-	docker build \
-		--file api.Dockerfile \
-		--target base \
-		--tag api_arm \
-		--cache-from=api-bare \
-		--cache-from=api \
-		--build-arg BUILDKIT_INLINE_CACHE=1 \
-		--platform linux/arm64 \
-		${PWD}
-
 ## build_test: Build the test image.
 .PHONY: build_test
 build_test:
 	docker build \
-		--file api.Dockerfile \
+		--file Dockerfile \
 		--target test \
 		--tag api-test  \
 		--cache-from=api-bare \
@@ -94,6 +93,11 @@ run_tests: build_test
 .PHONY: run_api_test
 run_api_test: build_base
 	cd tests/end_to_end; docker-compose up --exit-code-from client
+
+## run_migration_test: Run migration test.
+.PHONY: run_migration_test
+run_migration_test:
+	cd tests/migrations; docker-compose up --build --exit-code-from client
 
 ## run_container: Run container.
 .PHONY: run_container

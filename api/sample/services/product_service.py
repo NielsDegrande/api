@@ -4,11 +4,19 @@ from api.sample.dto.product import Product
 from api.sample.repositories import product_repository
 
 
-async def get_product(product_id: int | None) -> list[Product]:
-    """Return the requested product or all if None is specified.
+async def get_products() -> list[Product]:
+    """Return all products.
+
+    :return: All products.
+    """
+    return product_repository.read_products()
+
+
+async def get_product(product_id: int) -> Product:
+    """Return the requested product.
 
     :param product_id: ID of the product to get.
-    :return: Matching products.
+    :return: Matching product.
     """
     return product_repository.read_product(product_id=product_id)
 
