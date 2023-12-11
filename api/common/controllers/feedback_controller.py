@@ -22,7 +22,7 @@ feedback_router = APIRouter(
 )
 async def create_feedback(
     user: Annotated[User, Depends(authenticate_user)],
-    request: Feedback,
+    feedback: Feedback,
 ) -> None:
     """Send feedback.
 
@@ -31,5 +31,5 @@ async def create_feedback(
     """
     await feedback_service.create_feedback(
         user.user_id,
-        request,
+        feedback,
     )

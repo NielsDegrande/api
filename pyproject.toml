@@ -29,6 +29,7 @@ uvicorn = "^0.24.0"
 optional = true
 
 [tool.poetry.group.test.dependencies]
+httpx = "^0.25.2"
 pre-commit = "~3.6"
 pytest = "~7.4"
 pytest-cov = "~4.1"

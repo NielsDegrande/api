@@ -10,9 +10,8 @@ common_router = APIRouter(tags=[ApplicationTags.COMMON])
 
 @common_router.get("/")
 @common_router.get("")
-async def api_root() -> str:
+async def api_root() -> None:
     """Get the root of the API."""
-    return "OK"
 
 
 @common_router.get("/auth")
@@ -21,11 +20,8 @@ async def authenticate() -> None:
 
 
 @common_router.get("/db")
-async def check_db() -> str:
-    """Check if the database is responding.
-
-    :return: "OK" if the database is responding.
-    """
+async def check_db() -> None:
+    """Check if the database is responding."""
     return await default_service.check_db()
 
 

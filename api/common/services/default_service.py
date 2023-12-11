@@ -7,11 +7,8 @@ from api.config import config
 from api.utils.gcs import generate_download_signed_url_v4
 
 
-async def check_db() -> str:
-    """Check if the database is responding.
-
-    :return: "OK" if the database is responding.
-    """
+async def check_db() -> None:
+    """Check if the database is responding."""
     try:
         await default_repository.check_db()
     except Exception as exception:  # noqa: BLE001
@@ -19,7 +16,6 @@ async def check_db() -> str:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database is not responding: {exception}",
         ) from exception
-    return "OK"
 
 
 async def download_file(

@@ -19,7 +19,7 @@ ENTRYPOINT [ "bash" ]
 
 FROM base_bare AS base
 
-# Start the server.
+# Expose the server.
 EXPOSE 80
 ENTRYPOINT ["bash", "scripts/start.sh"]
 

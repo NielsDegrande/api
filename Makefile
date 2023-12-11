@@ -84,20 +84,7 @@ run_pre_commit: build_test
 ## run_tests: Run tests.
 .PHONY: run_tests
 run_tests: build_test
-	docker run --rm \
-		--volume ${PWD}:/app \
-		api-test \
-		-c "pytest -n auto -rf --durations=0 tests"
-
-## run_api_test: Run API test.
-.PHONY: run_api_test
-run_api_test: build_base
-	cd tests/end_to_end; docker-compose up --exit-code-from client
-
-## run_migration_test: Run migration test.
-.PHONY: run_migration_test
-run_migration_test:
-	cd tests/migrations; docker-compose up --build --exit-code-from client
+	cd tests; docker-compose up --exit-code-from api
 
 ## run_container: Run container.
 .PHONY: run_container

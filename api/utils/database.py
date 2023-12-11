@@ -74,9 +74,9 @@ def orm_to_pydantic(
 ) -> TypeVarBaseModel:
     """Convert an ORM object to a Pydantic object.
 
-    :param orm_object: the ORM object to convert.
-    :param pydantic_class: the Pydantic class of the resulting object.
-    :return: the Pydantic object.
+    :param orm_object: ORM object to convert.
+    :param pydantic_class: Pydantic class of the resulting object.
+    :return: A valid Pydantic object.
     """
     return pydantic_class.model_validate(orm_object, from_attributes=True)
 
@@ -87,8 +87,8 @@ def pydantic_to_orm(
 ) -> TypeVarORMModel:
     """Convert a Pydantic object to an ORM object.
 
-    :param pydantic_object: the Pydantic object to convert.
-    :param orm_class: the ORM class of the resulting object.
-    :return: the ORM object.
+    :param pydantic_object: Pydantic object to convert.
+    :param orm_class: ORM class of the resulting object.
+    :return: Converted ORM object.
     """
     return orm_class(**pydantic_object.model_dump())

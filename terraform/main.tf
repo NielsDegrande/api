@@ -1,8 +1,8 @@
 terraform {
-  required_version = ">= 1.3"
+  required_version = ">= 1.6"
 
   required_providers {
-    google = ">= 4.53"
+    google = ">= 5.8.0"
   }
 
   backend "gcs" {
