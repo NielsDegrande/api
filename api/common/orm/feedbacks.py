@@ -4,7 +4,12 @@ from datetime import datetime
 from typing import TYPE_CHECKING, ClassVar
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import (
+    Mapped,
+    # Pyright error: "mapped_column" is unknown import symbol.
+    mapped_column,  # pyright: ignore[reportGeneralTypeIssues]
+    relationship,
+)
 
 from api.common.orm.base import Base
 from api.config import config
@@ -34,7 +39,9 @@ class Feedbacks(Base):
         default=datetime.utcnow,
     )
 
-    user: Mapped["Users"] = relationship(
+    # Pyright error: Expression of type "relationship"
+    # cannot be assigned to declared type.
+    user: Mapped["Users"] = relationship(  # pyright: ignore[reportGeneralTypeIssues]
         "Users",
         back_populates="feedbacks",
     )

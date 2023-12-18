@@ -12,4 +12,4 @@ async def create_feedback(
     :param user_id: ID of user.
     :param request: The feedback request.
     """
-    feedback_repository.create_feedback(user_id, request)
+    await feedback_repository.create_feedback(user_id, request)

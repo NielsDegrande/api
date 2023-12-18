@@ -11,7 +11,7 @@ async def check_db() -> None:
     """Check if the database is responding."""
     try:
         await default_repository.check_db()
-    except Exception as exception:  # noqa: BLE001
+    except Exception as exception:  # noqa: BLE001 - Blind exception.p
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database is not responding: {exception}",

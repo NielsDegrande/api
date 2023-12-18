@@ -15,4 +15,4 @@ class Product(BaseModel):
     product_id: int | None = None
     product_name: str
     color: str
-    price: int = Field(ge=0)
+    price: float = Field(ge=0.0)

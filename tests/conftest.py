@@ -4,14 +4,14 @@ import base64
 
 import pytest
 from box import Box
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
 
 from api.api import api
 from api.utils.config import load_config
 from configs import CONFIGS_DIRECTORY
 
 USERNAME = "user"
-PASSWORD = "password"  # noqa: S105
+PASSWORD = "password"  # noqa: S105 - Possible hardcoded password.
 
 
 @pytest.fixture(scope="session")
@@ -24,13 +24,13 @@ def config() -> Box:
     return load_config([config_path])
 
 
-@pytest.fixture(scope="session")
-def test_client() -> TestClient:
-    """Get a test client.
+@pytest.fixture()
+def async_client() -> AsyncClient:
+    """Get an async test client.
 
-    :return: Test client for API.
+    :return: Async client for API.
     """
-    return TestClient(api)
+    return AsyncClient(app=api, base_url="http://localhost:8080")
 
 
 @pytest.fixture(scope="session")

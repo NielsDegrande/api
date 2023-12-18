@@ -1,12 +1,13 @@
 """Alembic environment specification."""
 
+import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from api.common.orm.base import Base
-from api.utils.database import create_connection_string
+from api.utils.database import create_connection_string, engine
 
 # This is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -47,26 +48,34 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def run_migrations_online() -> None:
+def _run_sync_migration(connection: AsyncConnection) -> None:
+    """Run migration synchronously.
+
+    :param connection: Connection to use for the migration.
+    """
+    context.configure(
+        # Pyright error: Argument of type "AsyncConnection" cannot be assigned
+        # to parameter of type "Connection".
+        connection=connection,  # type: ignore[reportGeneralTypeIssues]
+        target_metadata=target_metadata,
+        # Required as we are using a non-default schema.
+        include_schemas=True,
+    )
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+async def run_migrations_online() -> None:
     """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable = create_engine(create_connection_string())
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            # Required as we are using a non-default schema.
-            include_schemas=True,
-        )
-
-        with context.begin_transaction():
-            context.run_migrations()
+    async with engine.connect() as connection:
+        await connection.run_sync(_run_sync_migration)
 
 
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    run_migrations_online()
+    asyncio.run(run_migrations_online())

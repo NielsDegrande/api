@@ -10,8 +10,8 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from api.common.controllers.default_controller import common_router
 from api.common.controllers.feedback_controller import feedback_router
-from api.common.services.auth_service import authenticate_user
-from api.sample.controllers.product_controller import sample_router
+from api.common.services.user_service import authorize_user
+from api.sample.controllers.product_controller import product_router
 from api.utils.constants import ApplicationTags
 from ui import UI_DIRECTORY
 
@@ -37,7 +37,7 @@ api = FastAPI(
     description="API to support web application.",
     version="0.0.1",
     dependencies=[
-        Depends(authenticate_user),
+        Depends(authorize_user),
     ],
 )
 
@@ -77,7 +77,7 @@ async def exception_handler(request: Request, error: Exception) -> JSONResponse:
 api.include_router(common_router, prefix="/api")
 api.include_router(feedback_router, prefix="/api")
 # Add sample routes.
-api.include_router(sample_router, prefix="/api/sample")
+api.include_router(product_router, prefix="/api/sample")
 
 
 @api.get("/api/{full_path:path}", include_in_schema=False)

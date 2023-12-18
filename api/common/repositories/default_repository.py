@@ -2,10 +2,10 @@
 
 from sqlalchemy.sql import text
 
-from api.utils.database import database_session
+from api.utils.database import AsyncSessionLocal
 
 
 async def check_db() -> None:
     """Run a simple query against the database."""
-    with database_session() as session:
-        session.execute(text("SELECT 1"))
+    async with AsyncSessionLocal() as session, session.begin():
+        await session.execute(text("SELECT 1"))

@@ -6,13 +6,13 @@ from api.sample.dto.product import Product
 from api.sample.services import product_service
 from api.utils.constants import ApplicationTags
 
-sample_router = APIRouter(
+product_router = APIRouter(
     prefix="/product",
     tags=[ApplicationTags.SAMPLE],
 )
 
 
-@sample_router.get("")
+@product_router.get("")
 async def get_products() -> list[Product]:
     """Get all products.
 
@@ -21,7 +21,7 @@ async def get_products() -> list[Product]:
     return await product_service.get_products()
 
 
-@sample_router.get("/{product_id}")
+@product_router.get("/{product_id}")
 async def get_product(product_id: int) -> Product:
     """Get a single product.
 
@@ -31,7 +31,7 @@ async def get_product(product_id: int) -> Product:
     return await product_service.get_product(product_id=product_id)
 
 
-@sample_router.post(
+@product_router.post(
     "",
     status_code=status.HTTP_201_CREATED,
 )
@@ -46,7 +46,7 @@ async def create_product(
     return await product_service.create_product(product)
 
 
-@sample_router.put("/{product_id}")
+@product_router.put("/{product_id}")
 async def update_product(
     product: Product,
 ) -> Product:
@@ -58,7 +58,7 @@ async def update_product(
     return await product_service.update_product(product)
 
 
-@sample_router.delete("/{product_id}")
+@product_router.delete("/{product_id}")
 async def delete_product(
     product_id: int,
 ) -> None:

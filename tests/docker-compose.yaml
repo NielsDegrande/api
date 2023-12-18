@@ -9,7 +9,7 @@ services:
   api:
     image: api-test
     environment:
-      DB_DIALECT: postgresql
+      DB_DIALECT: postgresql+asyncpg
       DB_HOST: test_db
       DB_PORT: 5432
       DB_NAME: db

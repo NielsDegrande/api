@@ -1,20 +1,23 @@
 """User repository."""
 
 from fastapi import HTTPException, status
+from sqlalchemy import select
 
 from api.common.dto.user import User
 from api.common.orm.users import Users
-from api.utils.database import database_session, orm_to_pydantic
+from api.utils.database import AsyncSessionLocal, orm_to_pydantic
 
 
-def read_user(username: str) -> User:
+async def read_user(username: str) -> User:
     """Get a user by its name.
 
     :param username: Name of user to read.
     :return: user.
     """
-    with database_session() as session:
-        user = session.query(Users).filter_by(username=username).first()
+    async with AsyncSessionLocal() as session, session.begin():
+        query = select(Users).where(Users.username == username)
+        result = await session.execute(query)
+        user = result.scalars().first()
 
         if user is None:
             raise HTTPException(

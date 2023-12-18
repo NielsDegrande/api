@@ -25,7 +25,7 @@ brew install shellcheck
 
 ```shell
 # Database Configuration.
-echo 'DB_DIALECT=postgresql' >> .env
+echo 'DB_DIALECT=postgresql+asyncpg' >> .env
 echo 'DB_HOST=localhost' >> .env
 echo 'DB_PORT=5432' >> .env
 echo 'DB_NAME=db' >> .env

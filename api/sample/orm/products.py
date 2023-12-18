@@ -2,7 +2,11 @@
 
 from typing import ClassVar
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import (
+    Mapped,
+    # Pyright error: "mapped_column" is unknown import symbol.
+    mapped_column,  # pyright: ignore[reportGeneralTypeIssues]
+)
 
 from api.common.orm.base import Base
 from api.config import config
@@ -20,4 +24,4 @@ class Products(Base):
     )
     product_name: Mapped[str] = mapped_column(nullable=False)
     color: Mapped[str] = mapped_column(nullable=False)
-    price: Mapped[int] = mapped_column(nullable=False)
+    price: Mapped[float] = mapped_column(nullable=False)

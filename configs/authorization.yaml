@@ -1,0 +1,37 @@
+authorization:
+  roles:
+    admin:
+      - default
+      - feedback
+      - product
+    sample:
+      - default
+      - feedback
+      - product
+
+  rights:
+    default:
+      - method: GET
+        path: /api
+      - method: GET
+        path: /api/
+      - method: GET
+        path: /api/auth
+      - method: GET
+        path: /api/db
+      - method: GET
+        path: /api/file
+    feedback:
+      - method: POST
+        path: /api/feedback
+    product:
+      - method: GET
+        path: /api/sample/product
+      - method: GET
+        path: /api/sample/product/[0-9]*
+      - method: POST
+        path: /api/sample/product
+      - method: PUT
+        path: /api/sample/product/[0-9]*
+      - method: DELETE
+        path: /api/sample/product/[0-9]*

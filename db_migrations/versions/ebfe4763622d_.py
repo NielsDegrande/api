@@ -5,7 +5,7 @@ Revises: 5cfbdb83010d
 Create Date: 2023-12-06 20:13:36.589865
 
 """
-from typing import Sequence
+from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
@@ -27,7 +27,7 @@ def upgrade() -> None:
         sa.Column("product_id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("product_name", sa.String(), nullable=False),
         sa.Column("color", sa.String(), nullable=False),
-        sa.Column("price", sa.Integer(), nullable=False),
+        sa.Column("price", sa.Float(), nullable=False),
         sa.PrimaryKeyConstraint("product_id"),
         schema=config.sample.database_schema,
     )

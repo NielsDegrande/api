@@ -1,13 +1,13 @@
 """Database utilities."""
 
-from contextlib import contextmanager
-from functools import cache
-from typing import Generator, TypeVar
+import sys
+from typing import TypeVar
 
 from box import Box
 from pydantic import BaseModel
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import NullPool, QueuePool  # pyright: ignore[reportGeneralTypeIssues]
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
 from api.common.orm.base import Base
 from api.config import config
@@ -36,32 +36,18 @@ def create_connection_string(db_config: Box = config.database) -> str:
     )
 
 
-@cache
-def _get_session_factory() -> sessionmaker:
-    """Create a session factory.
-
-    :return: SQLAlchemy session factory.
-    """
-    engine = create_engine(create_connection_string())
-    return sessionmaker(bind=engine)
-
-
-@contextmanager
-def database_session() -> Generator[Session, None, None]:
-    """Provide a transactional scope around a series of operations.
-
-    :yield: Newly created SQLAlchemy session.
-    """
-    factory = _get_session_factory()
-    session = factory()
-    try:
-        yield session
-        session.commit()
-    except Exception:
-        session.rollback()
-        raise
-    finally:
-        session.close()
+engine = create_async_engine(
+    create_connection_string(),
+    future=True,
+    # AsyncIO pytest works with NullPool.
+    poolclass=NullPool if "pytest" in sys.modules else QueuePool,
+)
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    # Require explicit refreshes for performance reasons.
+    expire_on_commit=False,
+)
 
 
 TypeVarBaseModel = TypeVar("TypeVarBaseModel", bound=BaseModel)
@@ -69,7 +55,8 @@ TypeVarORMModel = TypeVar("TypeVarORMModel", bound=Base)
 
 
 def orm_to_pydantic(
-    orm_object: TypeVarORMModel,
+    # Pyright warning: TypeVar appears only once in generic function signature.
+    orm_object: TypeVarORMModel,  # pyright: ignore[reportInvalidTypeVarUse]
     pydantic_class: type[TypeVarBaseModel],
 ) -> TypeVarBaseModel:
     """Convert an ORM object to a Pydantic object.

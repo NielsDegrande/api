@@ -9,7 +9,7 @@ async def get_products() -> list[Product]:
 
     :return: All products.
     """
-    return product_repository.read_products()
+    return await product_repository.read_products()
 
 
 async def get_product(product_id: int) -> Product:
@@ -18,7 +18,7 @@ async def get_product(product_id: int) -> Product:
     :param product_id: ID of the product to get.
     :return: Matching product.
     """
-    return product_repository.read_product(product_id=product_id)
+    return await product_repository.read_product(product_id=product_id)
 
 
 async def create_product(
@@ -29,7 +29,7 @@ async def create_product(
     :param product: Product to create.
     :return: Created product.
     """
-    return product_repository.create_product(product=product)
+    return await product_repository.create_product(product=product)
 
 
 async def update_product(
@@ -40,7 +40,7 @@ async def update_product(
     :param product: Product to update.
     :return: Updated product.
     """
-    return product_repository.update_product(product=product)
+    return await product_repository.update_product(product=product)
 
 
 async def delete_product(
@@ -50,4 +50,4 @@ async def delete_product(
 
     :param product_id: ID of the product to delete.
     """
-    product_repository.delete_product(product_id=product_id)
+    await product_repository.delete_product(product_id=product_id)

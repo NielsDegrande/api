@@ -2,10 +2,10 @@
 
 from api.common.dto.feedback import Feedback
 from api.common.orm.feedbacks import Feedbacks
-from api.utils.database import database_session
+from api.utils.database import AsyncSessionLocal
 
 
-def create_feedback(
+async def create_feedback(
     user_id: int,
     feedback: Feedback,
 ) -> None:
@@ -19,5 +19,5 @@ def create_feedback(
         url_path=feedback.url_path,
         feedback_message=feedback.feedback_message,
     )
-    with database_session() as session:
+    async with AsyncSessionLocal() as session, session.begin():
         session.add(new_feedback)
