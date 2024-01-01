@@ -21,7 +21,7 @@ google-cloud-storage = "^2.14.0"
 python-box = "~7.1"
 python-dotenv = "^1.0.0"
 pyyaml = "^6.0.1"
-sqlalchemy = "^2.0.23"
+sqlalchemy = "^2.0.24"
 uvicorn = "^0.25.0"
 
 [tool.poetry.group.test]
