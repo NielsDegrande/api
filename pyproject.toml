@@ -12,7 +12,7 @@ api = "api.__main__:main"
 
 [tool.poetry.dependencies]
 python = "~3.11"
-alembic = "^1.13.0"
+alembic = "^1.13.1"
 asyncpg = "^0.29.0"
 bcrypt = "^4.1.2"
 coloredlogs = "~15.0"
