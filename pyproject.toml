@@ -22,7 +22,7 @@ python-box = "~7.1"
 python-dotenv = "^1.0.0"
 pyyaml = "^6.0.1"
 sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.24" }
-uvicorn = "^0.25.0"
+uvicorn = "^0.26.0"
 
 [tool.poetry.group.test]
 optional = true
