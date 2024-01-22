@@ -3,16 +3,17 @@
 from dotenv import load_dotenv
 
 from api.utils.config import load_config
+from api.utils.constants import YAML_EXTENSION
 from configs import CONFIGS_DIRECTORY
 
 # Load environment variables.
 load_dotenv()
 
 # Load configuration.
-config_path = CONFIGS_DIRECTORY / "config.yaml"
-authorization_config_path = CONFIGS_DIRECTORY / "authorization.yaml"
-common_config_path = CONFIGS_DIRECTORY / "common.yaml"
-sample_config_path = CONFIGS_DIRECTORY / "sample.yaml"
+config_path = CONFIGS_DIRECTORY / f"config{YAML_EXTENSION}"
+authorization_config_path = CONFIGS_DIRECTORY / f"authorization{YAML_EXTENSION}"
+common_config_path = CONFIGS_DIRECTORY / f"common{YAML_EXTENSION}"
+sample_config_path = CONFIGS_DIRECTORY / f"sample{YAML_EXTENSION}"
 
 config = load_config(
     [

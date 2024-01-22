@@ -8,6 +8,7 @@ from httpx import AsyncClient
 
 from api.api import api
 from api.utils.config import load_config
+from api.utils.constants import YAML_EXTENSION
 from configs import CONFIGS_DIRECTORY
 
 USERNAME = "user"
@@ -20,7 +21,7 @@ def config() -> Box:
 
     :return: Test configuration.
     """
-    config_path = CONFIGS_DIRECTORY / "test.yaml"
+    config_path = CONFIGS_DIRECTORY / f"test{YAML_EXTENSION}"
     return load_config([config_path])
 
 

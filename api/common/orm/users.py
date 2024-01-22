@@ -29,7 +29,7 @@ class Users(Base):
     )
     username: Mapped[str] = mapped_column(nullable=False)
     password_hash: Mapped[str] = mapped_column(nullable=False)
-    roles: Mapped[str] = mapped_column()
+    roles: Mapped[str] = mapped_column(nullable=True)
 
     # Pyright error: Expression of type "relationship"
     # cannot be assigned to declared type.

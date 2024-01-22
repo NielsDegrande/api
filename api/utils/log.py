@@ -6,9 +6,10 @@ from pathlib import Path
 
 import yaml
 
+from api.utils.constants import YAML_EXTENSION
 from configs import CONFIGS_DIRECTORY
 
-LOG_CONFIG = CONFIGS_DIRECTORY / "log.yaml"
+LOG_CONFIG = CONFIGS_DIRECTORY / f"log{YAML_EXTENSION}"
 LOG_FOLDER = "logs"
 
 

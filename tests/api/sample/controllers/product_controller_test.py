@@ -14,7 +14,7 @@ async def test__product_endpoints__expect_no_error(
 ) -> None:
     """Validate that the `product` endpoints work end-to-end.
 
-    :param await client: Async client for API.
+    :param async_client: Async client for API.
     :param basic_auth_header: Authentication header.
     """
     async with async_client as client:

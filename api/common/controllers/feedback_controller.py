@@ -27,7 +27,7 @@ async def create_feedback(
     """Send feedback.
 
     :param user: user.
-    :param request: The feedback request.
+    :param feedback: Feedback to send.
     """
     await feedback_service.create_feedback(
         user.user_id,

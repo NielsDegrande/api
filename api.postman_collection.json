@@ -1,0 +1,239 @@
+{
+  "auth": {
+    "basic": [
+      {
+        "key": "password",
+        "type": "string",
+        "value": "password"
+      },
+      {
+        "key": "username",
+        "type": "string",
+        "value": "user"
+      }
+    ],
+    "type": "basic"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          ""
+        ],
+        "type": "text/javascript"
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          ""
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "info": {
+    "_exporter_id": "30186082",
+    "_postman_id": "e06f7a70-aaa1-4cb8-adc6-75decfcdc9ff",
+    "name": "Template API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "item": [
+        {
+          "name": "Root",
+          "request": {
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "name": "Auth",
+          "request": {
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        },
+        {
+          "name": "DB",
+          "request": {
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        }
+      ],
+      "name": "Default"
+    },
+    {
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n    \"feedback_message\": \"test\",\n    \"url_path\": \"test_path\"\n}"
+            },
+            "header": [],
+            "method": "POST",
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "feedback"
+              ],
+              "port": "{{port}}",
+              "protocol": "{{protocol}}",
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/feedback"
+            }
+          },
+          "response": []
+        }
+      ],
+      "name": "Feedback"
+    },
+    {
+      "item": [
+        {
+          "name": "Get All",
+          "request": {
+            "header": [],
+            "method": "GET",
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sample",
+                "product"
+              ],
+              "port": "{{port}}",
+              "protocol": "{{protocol}}",
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get One",
+          "request": {
+            "header": [],
+            "method": "GET",
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sample",
+                "product",
+                "1"
+              ],
+              "port": "{{port}}",
+              "protocol": "{{protocol}}",
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product/1"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create",
+          "request": {
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n    \"product_name\": \"test\",\n    \"color\": \"blue\",\n    \"price\": 5\n}"
+            },
+            "header": [],
+            "method": "POST",
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sample",
+                "product"
+              ],
+              "port": "{{port}}",
+              "protocol": "{{protocol}}",
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\n    \"product_id\": 1,\n    \"product_name\": \"test\",\n    \"color\": \"blue\",\n    \"price\": 5\n}"
+            },
+            "header": [],
+            "method": "PUT",
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sample",
+                "product",
+                "1"
+              ],
+              "port": "{{port}}",
+              "protocol": "{{protocol}}",
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product/1"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "header": [],
+            "method": "GET"
+          },
+          "response": []
+        }
+      ],
+      "name": "Product"
+    }
+  ],
+  "variable": [
+    {
+      "key": "protocol",
+      "value": "http"
+    },
+    {
+      "key": "baseUrl",
+      "value": "localhost"
+    },
+    {
+      "key": "port",
+      "value": "8080"
+    }
+  ]
+}
