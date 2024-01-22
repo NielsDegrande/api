@@ -5,7 +5,10 @@ from typing import TypeVar
 
 from box import Box
 from pydantic import BaseModel
-from sqlalchemy import NullPool, QueuePool  # pyright: ignore[reportGeneralTypeIssues]
+from sqlalchemy import (
+    NullPool,  # pyright: ignore[reportAttributeAccessIssue]
+    QueuePool,  # pyright: ignore[reportAttributeAccessIssue]
+)
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 

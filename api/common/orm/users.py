@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, ClassVar
 from sqlalchemy.orm import (
     Mapped,
     # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportGeneralTypeIssues]
+    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
     relationship,
 )
 
@@ -35,7 +35,7 @@ class Users(Base):
     # cannot be assigned to declared type.
     feedbacks: Mapped[
         "Feedbacks"
-    ] = relationship(  # pyright: ignore[reportGeneralTypeIssues]
+    ] = relationship(  # pyright: ignore[reportAssignmentType]
         "Feedbacks",
         back_populates="user",
     )

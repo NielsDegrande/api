@@ -7,7 +7,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (
     Mapped,
     # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportGeneralTypeIssues]
+    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
     relationship,
 )
 
@@ -41,7 +41,7 @@ class Feedbacks(Base):
 
     # Pyright error: Expression of type "relationship"
     # cannot be assigned to declared type.
-    user: Mapped["Users"] = relationship(  # pyright: ignore[reportGeneralTypeIssues]
+    user: Mapped["Users"] = relationship(  # pyright: ignore[reportAssignmentType]
         "Users",
         back_populates="feedbacks",
     )
