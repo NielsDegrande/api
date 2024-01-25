@@ -27,6 +27,7 @@ async def download_file(
 
     :param file_path: Path to file to download.
     :param bucket_name: Name of the bucket to download from.
+    :param expiration_in_minutes: Number of minutes until the download link expires.
     :return: Download link.
     """
     file_path = file_path.strip()
