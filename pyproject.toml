@@ -19,7 +19,7 @@ coloredlogs = "~15.0"
 fastapi = "^0.109.0"
 google-cloud-storage = "^2.14.0"
 python-box = "~7.1"
-python-dotenv = "^1.0.0"
+python-dotenv = "^1.0.1"
 pyyaml = "^6.0.1"
 sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.24" }
 uvicorn = "^0.26.0"
