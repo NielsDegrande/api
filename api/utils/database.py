@@ -9,8 +9,11 @@ from sqlalchemy import (
     NullPool,  # pyright: ignore[reportAttributeAccessIssue]
     QueuePool,  # pyright: ignore[reportAttributeAccessIssue]
 )
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import (
+    # "async_sessionmaker" is unknown import symbol.
+    async_sessionmaker,  # pyright: ignore[reportAttributeAccessIssue]
+    create_async_engine,
+)
 
 from api.common.orm.base import Base
 from api.config import config
@@ -45,9 +48,8 @@ engine = create_async_engine(
     # AsyncIO pytest works with NullPool.
     poolclass=NullPool if "pytest" in sys.modules else QueuePool,
 )
-AsyncSessionLocal = sessionmaker(
+AsyncSessionLocal = async_sessionmaker(
     bind=engine,
-    class_=AsyncSession,
     # Require explicit refreshes for performance reasons.
     expire_on_commit=False,
 )

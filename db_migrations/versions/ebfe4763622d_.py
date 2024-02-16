@@ -1,10 +1,5 @@
-"""Add sample tables.
+"""Add sample tables."""
 
-Revision ID: ebfe4763622d
-Revises: 5cfbdb83010d
-Create Date: 2023-12-06 20:13:36.589865
-
-"""
 from collections.abc import Sequence
 
 import sqlalchemy as sa

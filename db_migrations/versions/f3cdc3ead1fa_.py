@@ -1,10 +1,5 @@
-"""Add roles column to users table.
+"""Add roles column to users table."""
 
-Revision ID: f3cdc3ead1fa
-Revises: ebfe4763622d
-Create Date: 2023-12-18 16:14:27.654913
-
-"""
 from collections.abc import Sequence
 
 import sqlalchemy as sa

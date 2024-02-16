@@ -1,9 +1,4 @@
-"""Add common tables.
-
-Revision ID: 5cfbdb83010d
-Revises:
-Create Date: 2023-12-06 18:31:36.355177
-"""
+"""Add common tables."""
 
 from collections.abc import Sequence
 
