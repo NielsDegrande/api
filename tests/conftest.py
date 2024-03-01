@@ -35,11 +35,11 @@ def async_client() -> AsyncClient:
 
 
 @pytest.fixture(scope="session")
-def basic_auth_header() -> str:
+def auth_header() -> dict[str, str]:
     """Create basic authentication header.
 
     :return: Basic authentication header.
     """
     user_pass = f"{USERNAME}:{PASSWORD}"
     user_pass_b64 = base64.b64encode(user_pass.encode()).decode()
-    return f"Basic {user_pass_b64}"
+    return {"Authorization": f"Basic {user_pass_b64}"}

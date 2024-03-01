@@ -12,7 +12,7 @@ async def read_user(username: str) -> User:
     """Get a user by its name.
 
     :param username: Name of user to read.
-    :return: user.
+    :return: Matching user.
     """
     async with AsyncSessionLocal() as session, session.begin():
         query = select(Users).where(Users.username == username)

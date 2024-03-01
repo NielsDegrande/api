@@ -1,4 +1,4 @@
-"""Authentication service."""
+"""Authentication and authorization service."""
 
 from functools import cache
 from re import fullmatch

@@ -10,17 +10,14 @@ from api.sample.dto.product import Product
 @pytest.mark.asyncio()
 async def test__product_endpoints__expect_no_error(
     async_client: AsyncClient,
-    basic_auth_header: str,
+    auth_header: dict[str, str],
 ) -> None:
     """Validate that the `product` endpoints work end-to-end.
 
     :param async_client: Async client for API.
-    :param basic_auth_header: Authentication header.
+    :param auth_header: Authentication header.
     """
     async with async_client as client:
-        headers = {
-            "Authorization": basic_auth_header,
-        }
         product_prefix = "/api/sample/product"
 
         # Create a product.
@@ -32,7 +29,7 @@ async def test__product_endpoints__expect_no_error(
         data = product.model_dump()
         response = await client.post(
             product_prefix,
-            headers=headers,
+            headers=auth_header,
             json=data,
         )
         assert response.status_code == status.HTTP_201_CREATED
@@ -41,7 +38,7 @@ async def test__product_endpoints__expect_no_error(
         # Read all products.
         response = await client.get(
             product_prefix,
-            headers=headers,
+            headers=auth_header,
         )
         assert response.status_code == status.HTTP_200_OK
         assert len(response.json()) > 0
@@ -49,7 +46,7 @@ async def test__product_endpoints__expect_no_error(
         # Read a single product.
         response = await client.get(
             f"{product_prefix}/{post_product.product_id}",
-            headers=headers,
+            headers=auth_header,
         )
         assert response.status_code == status.HTTP_200_OK
         assert Product(**response.json()).price == product.price
@@ -63,7 +60,7 @@ async def test__product_endpoints__expect_no_error(
         ).model_dump()
         response = await client.put(
             f"{product_prefix}/{post_product.product_id}",
-            headers=headers,
+            headers=auth_header,
             json=new_data,
         )
         assert response.status_code == status.HTTP_200_OK
@@ -72,13 +69,13 @@ async def test__product_endpoints__expect_no_error(
         # Delete a product.
         response = await client.delete(
             f"{product_prefix}/{post_product.product_id}",
-            headers=headers,
+            headers=auth_header,
         )
         assert response.status_code == status.HTTP_200_OK
 
         # Validate deletion.
         response = await client.get(
             f"{product_prefix}/{post_product.product_id}",
-            headers=headers,
+            headers=auth_header,
         )
         assert response.status_code == status.HTTP_404_NOT_FOUND
