@@ -1,4 +1,5 @@
 """Common ORM."""
+
 from api.common.orm.base import Base
 
 # Import ORMs to initialize base.

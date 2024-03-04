@@ -1,4 +1,5 @@
 """Feedback service."""
+
 from api.common.dto.feedback import Feedback
 from api.common.repositories import feedback_repository
 

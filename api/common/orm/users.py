@@ -33,9 +33,9 @@ class Users(Base):
 
     # Pyright error: Expression of type "relationship"
     # cannot be assigned to declared type.
-    feedbacks: Mapped[
-        "Feedbacks"
-    ] = relationship(  # pyright: ignore[reportAssignmentType]
-        "Feedbacks",
-        back_populates="user",
+    feedbacks: Mapped["Feedbacks"] = (
+        relationship(  # pyright: ignore[reportAssignmentType]
+            "Feedbacks",
+            back_populates="user",
+        )
     )
