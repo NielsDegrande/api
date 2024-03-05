@@ -6,8 +6,8 @@ from typing import TypeVar
 from box import Box
 from pydantic import BaseModel
 from sqlalchemy import (
+    AsyncAdaptedQueuePool,  # pyright: ignore[reportAttributeAccessIssue]
     NullPool,  # pyright: ignore[reportAttributeAccessIssue]
-    QueuePool,  # pyright: ignore[reportAttributeAccessIssue]
 )
 from sqlalchemy.ext.asyncio import (
     # "async_sessionmaker" is unknown import symbol.
@@ -46,7 +46,7 @@ engine = create_async_engine(
     create_connection_string(),
     future=True,
     # AsyncIO pytest works with NullPool.
-    poolclass=NullPool if "pytest" in sys.modules else QueuePool,
+    poolclass=NullPool if "pytest" in sys.modules else AsyncAdaptedQueuePool,
 )
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,
