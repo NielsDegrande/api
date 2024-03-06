@@ -50,9 +50,9 @@ async def test_authenticate__expect_ok(
     :param auth_header: Authentication header.
     """
     async with async_client as client:
-        response = await client.get("/auth", headers=auth_header)
+        response = await client.get("/api/auth", headers=auth_header)
         assert response.status_code == status.HTTP_200_OK
-        response = await client.get("/auth")
+        response = await client.get("/api/auth")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
