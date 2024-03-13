@@ -4,11 +4,11 @@ from fastapi import APIRouter, status
 
 from api.sample.dto.product import Product
 from api.sample.services import product_service
-from api.utils.constants import ApplicationTags
+from api.utils.constants import ApplicationTag
 
 product_router = APIRouter(
     prefix="/product",
-    tags=[ApplicationTags.SAMPLE],
+    tags=[ApplicationTag.SAMPLE],
 )
 
 

@@ -3,9 +3,9 @@
 from fastapi import APIRouter
 
 from api.common.services import default_service
-from api.utils.constants import ApplicationTags
+from api.utils.constants import ApplicationTag
 
-common_router = APIRouter(tags=[ApplicationTags.COMMON])
+common_router = APIRouter(tags=[ApplicationTag.COMMON])
 
 
 @common_router.get("/")

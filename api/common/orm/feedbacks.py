@@ -31,6 +31,8 @@ class Feedbacks(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey(f"{config.common.database_schema}.users.user_id"),
         nullable=False,
+        # Put an index on columns you will filter by often.
+        index=True,
     )
     url_path: Mapped[str] = mapped_column(nullable=False)
     feedback_message: Mapped[str] = mapped_column(nullable=False)

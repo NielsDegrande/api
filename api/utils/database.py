@@ -5,14 +5,14 @@ from typing import TypeVar
 
 from box import Box
 from pydantic import BaseModel
-from sqlalchemy import (
-    AsyncAdaptedQueuePool,  # pyright: ignore[reportAttributeAccessIssue]
-    NullPool,  # pyright: ignore[reportAttributeAccessIssue]
-)
 from sqlalchemy.ext.asyncio import (
     # "async_sessionmaker" is unknown import symbol.
     async_sessionmaker,  # pyright: ignore[reportAttributeAccessIssue]
     create_async_engine,
+)
+from sqlalchemy.pool import (
+    AsyncAdaptedQueuePool,
+    NullPool,
 )
 
 from api.common.orm.base import Base

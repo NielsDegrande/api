@@ -4,7 +4,7 @@ import base64
 
 import pytest
 from box import Box
-from httpx import AsyncClient
+from httpx import ASGITransport, AsyncClient
 
 from api.api import api
 from api.utils.config import load_config
@@ -31,7 +31,12 @@ def async_client() -> AsyncClient:
 
     :return: Async client for API.
     """
-    return AsyncClient(app=api, base_url="http://localhost:8080")
+    return AsyncClient(
+        # Pyright error: Argument of type "FastAPI" cannot be assigned
+        # to parameter of type "_ASGIApp".
+        transport=ASGITransport(app=api),  # type: ignore[reportArgumentType]
+        base_url="http://localhost:8080",
+    )
 
 
 @pytest.fixture(scope="session")

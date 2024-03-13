@@ -10,7 +10,7 @@ YAML_EXTENSION = ".yaml"
 
 
 # FastAPI tags.
-class ApplicationTags(StrEnum):
+class ApplicationTag(StrEnum):
     """Tags for FastAPI."""
 
     COMMON = "common"

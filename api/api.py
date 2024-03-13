@@ -13,18 +13,18 @@ from api.common.controllers.default_controller import common_router
 from api.common.controllers.feedback_controller import feedback_router
 from api.common.services.user_service import authorize_user
 from api.sample.controllers.product_controller import product_router
-from api.utils.constants import ApplicationTags
+from api.utils.constants import ApplicationTag
 from ui import UI_DIRECTORY
 
 log_ = logging.getLogger(__name__)
 
 tags_metadata = [
     {
-        "name": ApplicationTags.COMMON,
+        "name": ApplicationTag.COMMON,
         "description": "Default and shared operations.",
     },
     {
-        "name": ApplicationTags.SAMPLE,
+        "name": ApplicationTag.SAMPLE,
         "description": "Operations for the sample part of the application.",
     },
 ]

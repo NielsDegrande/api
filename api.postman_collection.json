@@ -36,7 +36,7 @@
   ],
   "info": {
     "_exporter_id": "30186082",
-    "_postman_id": "e06f7a70-aaa1-4cb8-adc6-75decfcdc9ff",
+    "_postman_id": "460a2f75-d2a0-48be-a447-149f907a8142",
     "name": "Template API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
@@ -47,7 +47,10 @@
           "name": "Root",
           "request": {
             "header": [],
-            "method": "GET"
+            "method": "GET",
+            "url": {
+              "raw": ""
+            }
           },
           "response": []
         },
@@ -55,7 +58,10 @@
           "name": "Auth",
           "request": {
             "header": [],
-            "method": "GET"
+            "method": "GET",
+            "url": {
+              "raw": ""
+            }
           },
           "response": []
         },
@@ -63,7 +69,10 @@
           "name": "DB",
           "request": {
             "header": [],
-            "method": "GET"
+            "method": "GET",
+            "url": {
+              "raw": ""
+            }
           },
           "response": []
         }
@@ -214,7 +223,21 @@
           "name": "Delete",
           "request": {
             "header": [],
-            "method": "GET"
+            "method": "DELETE",
+            "url": {
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sample",
+                "product",
+                "1"
+              ],
+              "port": "{{port}}",
+              "protocol": "{{protocol}}",
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product/1"
+            }
           },
           "response": []
         }

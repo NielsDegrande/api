@@ -8,11 +8,11 @@ from api.common.dto.feedback import Feedback
 from api.common.dto.user import User
 from api.common.services import feedback_service
 from api.common.services.user_service import authorize_user
-from api.utils.constants import ApplicationTags
+from api.utils.constants import ApplicationTag
 
 feedback_router = APIRouter(
     prefix="/feedback",
-    tags=[ApplicationTags.COMMON],
+    tags=[ApplicationTag.COMMON],
 )
 
 

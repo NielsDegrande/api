@@ -68,6 +68,7 @@ addopts = [
     "-r sxX",
 ]
 cache_dir = ".cache"
+filterwarnings = [ "error" ]
 testpaths = "tests"
 
 [tool.coverage.run]
