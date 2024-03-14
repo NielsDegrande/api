@@ -10,8 +10,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - pgdata_transactional:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
   # Transactional database to support the API.
-  pgdata_transactional:
+  pgdata:

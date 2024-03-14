@@ -22,9 +22,11 @@ def upgrade() -> None:
         sa.Column("user_id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("username", sa.String(), nullable=False),
         sa.Column("password_hash", sa.String(), nullable=False),
+        sa.Column("roles", sa.String(), nullable=True),
         sa.PrimaryKeyConstraint("user_id"),
         schema=config.common.database_schema,
     )
+
     op.create_table(
         "feedbacks",
         sa.Column("feedback_id", sa.Integer(), autoincrement=True, nullable=False),
@@ -37,6 +39,14 @@ def upgrade() -> None:
             ["common.users.user_id"],
         ),
         sa.PrimaryKeyConstraint("feedback_id"),
+        schema=config.common.database_schema,
+    )
+
+    op.create_index(
+        op.f("ix_common_feedbacks_user_id"),
+        "feedbacks",
+        ["user_id"],
+        unique=False,
         schema=config.common.database_schema,
     )
 
