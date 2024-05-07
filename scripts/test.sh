@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Stop upon error and undefined variables.
 # Print commands before executing.

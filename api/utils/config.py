@@ -12,7 +12,7 @@ from box import Box
 log_ = logging.getLogger(__name__)
 
 
-def load_config(config_paths: list[str | Path]) -> Box:
+def load_config(config_paths: list[Path]) -> Box:
     """Load config from file.
 
     :param config_paths: Path to config files.
@@ -21,9 +21,8 @@ def load_config(config_paths: list[str | Path]) -> Box:
     """
     config: dict = {}
     for config_path in config_paths:
-        path_ = Path(config_path)
-        if path_.exists():
-            with path_.open() as file_:
+        if config_path.exists():
+            with config_path.open() as file_:
                 config = _update_config(yaml.safe_load(file_.read()), config)
         else:
             error_message = f"'{config_path}' not found, configuration is not loaded."

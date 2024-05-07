@@ -10,16 +10,14 @@ from configs import CONFIGS_DIRECTORY
 load_dotenv()
 
 # Load configuration.
-config_path = CONFIGS_DIRECTORY / f"config{YAML_EXTENSION}"
-authorization_config_path = CONFIGS_DIRECTORY / f"authorization{YAML_EXTENSION}"
-common_config_path = CONFIGS_DIRECTORY / f"common{YAML_EXTENSION}"
-sample_config_path = CONFIGS_DIRECTORY / f"sample{YAML_EXTENSION}"
+configs = [
+    CONFIGS_DIRECTORY / f"{config_name}{YAML_EXTENSION}"
+    for config_name in [
+        "config",
+        "authorization",
+        "common",
+        "sample",
+    ]
+]
 
-config = load_config(
-    [
-        config_path,
-        authorization_config_path,
-        common_config_path,
-        sample_config_path,
-    ],
-)
+config = load_config(configs)

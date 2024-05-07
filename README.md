@@ -14,7 +14,7 @@ source venv/bin/activate
 make install_dev
 ```
 
-If you want to commit changes to `/scripts/`,
+If you want to commit changes to `scripts`,
 you need to install ShellCheck, e.g. with:
 
 ```shell
@@ -70,7 +70,7 @@ This needs to be replaced by a more secure mechanism for any real world usage.
 
 ### Authorization
 
-Authorization with a role-based access control (RBAC) system is currently not implemented.
+Authorization with a role-based access control (RBAC) system.
 
 ### File Server
 

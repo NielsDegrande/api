@@ -23,6 +23,8 @@ def main() -> None:
         host="localhost",
         port=8080,
         reload=args.debug,
+        reload_includes=["*.py", "configs/*.yaml", "configs/**/*.yaml"],
+        reload_excludes=["scripts/*"],
         access_log=True,
         log_config=read_logging_config(),
     )
