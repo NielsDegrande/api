@@ -155,3 +155,6 @@ test-reports
 
 # VS Code
 .vscode
+
+# OpenAPI
+openapi.json
