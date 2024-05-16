@@ -108,4 +108,9 @@ async def catch_all(request: Request) -> FileResponse:
     if Path.is_file(file_path):
         return FileResponse(file_path)
 
-    return FileResponse(ui_directory_path / "index.html")
+    index_path = ui_directory_path / "index.html"
+    if Path.is_file(index_path):
+        return FileResponse(index_path)
+
+    not_found_path = ui_directory_path / "not_found.html"
+    return FileResponse(not_found_path)
