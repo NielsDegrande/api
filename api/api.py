@@ -37,9 +37,6 @@ api = FastAPI(
     title="API",
     description="API to support web application.",
     version="0.0.1",
-    dependencies=[
-        Depends(authorize_user),
-    ],
 )
 
 
@@ -75,10 +72,28 @@ async def exception_handler(request: Request, error: Exception) -> JSONResponse:
 
 
 # Add the default API routes.
-api.include_router(common_router, prefix="/api")
-api.include_router(feedback_router, prefix="/api")
+api.include_router(
+    common_router,
+    prefix="/api",
+    dependencies=[
+        Depends(authorize_user),
+    ],
+)
+api.include_router(
+    feedback_router,
+    prefix="/api",
+    dependencies=[
+        Depends(authorize_user),
+    ],
+)
 # Add sample routes.
-api.include_router(product_router, prefix="/api/sample")
+api.include_router(
+    product_router,
+    prefix="/api/sample",
+    dependencies=[
+        Depends(authorize_user),
+    ],
+)
 
 
 @api.get("/api/{full_path:path}", include_in_schema=False)
