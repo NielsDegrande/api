@@ -28,7 +28,7 @@ def load_config(config_paths: list[Path]) -> Box:
             error_message = f"'{config_path}' not found, configuration is not loaded."
             raise FileNotFoundError(error_message)
     config = Box(config)
-    environment_variables = defaultdict(lambda: "", environ)
+    environment_variables = defaultdict(str, environ)
     return _resolve_environment_variables(config, environment_variables)
 
 
