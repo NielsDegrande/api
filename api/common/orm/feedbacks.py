@@ -29,7 +29,10 @@ class Feedbacks(Base):
         autoincrement=True,
     )
     user_id: Mapped[int] = mapped_column(
-        ForeignKey(f"{config.common.database_schema}.users.user_id"),
+        ForeignKey(
+            f"{config.common.database_schema}.users.user_id",
+            ondelete="CASCADE",
+        ),
         nullable=False,
         # Put an index on columns you will filter by often.
         index=True,

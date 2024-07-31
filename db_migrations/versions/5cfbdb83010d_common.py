@@ -37,6 +37,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["common.users.user_id"],
+            ondelete="CASCADE",
         ),
         sa.PrimaryKeyConstraint("feedback_id"),
         schema=config.common.database_schema,
