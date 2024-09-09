@@ -56,7 +56,11 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 TypeVarBaseModel = TypeVar("TypeVarBaseModel", bound=BaseModel)
-TypeVarORMModel = TypeVar("TypeVarORMModel", bound=Base)
+# Pyright warning: Variable not allowed in type expression.
+TypeVarORMModel = TypeVar(
+    "TypeVarORMModel",
+    bound=Base,  # pyright: ignore[reportInvalidTypeForm]
+)
 
 
 def orm_to_pydantic(
