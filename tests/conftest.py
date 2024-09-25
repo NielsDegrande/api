@@ -25,7 +25,7 @@ def config() -> Box:
     return load_config([config_path])
 
 
-@pytest.fixture()
+@pytest.fixture
 def async_client() -> AsyncClient:
     """Get an async test client.
 

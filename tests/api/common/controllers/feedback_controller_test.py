@@ -7,7 +7,7 @@ from httpx import AsyncClient
 from api.common.dto.feedback import Feedback
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_create_feedback__expect_created(
     async_client: AsyncClient,
     auth_header: dict[str, str],

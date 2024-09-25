@@ -14,4 +14,4 @@ services:
 
 volumes:
   # Transactional database to support the API.
-  pgdata:
+  pgdata_transactional:

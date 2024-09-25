@@ -5,7 +5,7 @@ from fastapi import status
 from httpx import AsyncClient
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_root__expect_ok(
     async_client: AsyncClient,
     auth_header: dict[str, str],
@@ -24,7 +24,7 @@ async def test_root__expect_ok(
         assert response.status_code == status.HTTP_200_OK
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_api_root__expect_ok(
     async_client: AsyncClient,
     auth_header: dict[str, str],
@@ -39,7 +39,7 @@ async def test_api_root__expect_ok(
     assert response.status_code == status.HTTP_200_OK
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_authenticate__expect_ok(
     async_client: AsyncClient,
     auth_header: dict[str, str],
@@ -56,7 +56,7 @@ async def test_authenticate__expect_ok(
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_check_db__expect_ok(
     async_client: AsyncClient,
     auth_header: dict[str, str],

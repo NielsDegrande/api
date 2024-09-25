@@ -7,7 +7,7 @@ from httpx import AsyncClient
 from api.sample.dto.product import Product
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test__product_endpoints__expect_no_error(
     async_client: AsyncClient,
     auth_header: dict[str, str],
