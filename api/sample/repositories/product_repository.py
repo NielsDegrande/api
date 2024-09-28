@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.sample.dto.product import Product
+from api.sample.dto.product import ProductRequest, ProductResponse
 from api.sample.orm.products import Products
 from api.utils.database import (
     AsyncSessionLocal,
@@ -13,7 +13,7 @@ from api.utils.database import (
 )
 
 
-async def create_product(product: Product) -> Product:
+async def create_product(product: ProductRequest) -> ProductResponse:
     """Create product.
 
     :param product: Product to create.
@@ -23,14 +23,25 @@ async def create_product(product: Product) -> Product:
     async with AsyncSessionLocal() as session, session.begin():
         session.add(new_product)
         await session.commit()
-        return orm_to_pydantic(new_product, Product)
+        return orm_to_pydantic(new_product, ProductResponse)
 
 
-async def _get_product_by_id(product_id: int, session: AsyncSession) -> Products:
-    """Get product given its ID.
+async def read_products() -> list[ProductResponse]:
+    """Read products.
 
-    :param session: Session to use to query the database.
+    :return: All products.
+    """
+    async with AsyncSessionLocal() as session, session.begin():
+        query = select(Products)
+        products = (await session.execute(query)).scalars().all()
+        return [orm_to_pydantic(product, ProductResponse) for product in products]
+
+
+async def _read_product(product_id: int, session: AsyncSession) -> Products:
+    """Read product by ID.
+
     :param product_id: ID of the product to read.
+    :param session: Session to use to query the database.
     :return: Matching product.
     :raises: HTTPException if no product is found.
     """
@@ -45,57 +56,39 @@ async def _get_product_by_id(product_id: int, session: AsyncSession) -> Products
     return product
 
 
-async def _get_products(session: AsyncSession) -> list[Products]:
-    """Get all products.
-
-    :param session: Session to use to query the database.
-    :return: All products.
-    """
-    query = select(Products)
-    result = await session.execute(query)
-    return result.scalars().all()
-
-
-async def read_products() -> list[Product]:
-    """Read products.
-
-    :return: All products.
-    """
-    async with AsyncSessionLocal() as session, session.begin():
-        return [
-            orm_to_pydantic(product, Product)
-            for product in await _get_products(session)
-        ]
-
-
-async def read_product(product_id: int) -> Product:
+async def read_product(product_id: int) -> ProductResponse:
     """Read product by ID.
 
     :param product_id: ID of the product to read.
     :return: Matching product.
     """
     async with AsyncSessionLocal() as session, session.begin():
-        return orm_to_pydantic(await _get_product_by_id(product_id, session), Product)
+        return orm_to_pydantic(
+            await _read_product(product_id, session),
+            ProductResponse,
+        )
 
 
 async def update_product(
-    product: Product,
-) -> Product:
+    product_id: int,
+    product: ProductRequest,
+) -> ProductResponse:
     """Update product.
 
+    :param product_id: ID of the product to update.
     :param product: Product to update.
     :return: Updated product.
     :raises: HTTPException if no product ID is found.
     """
-    if not product.product_id:
+    if not product_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Product ID must be specified to update a product.",
         )
 
     async with AsyncSessionLocal() as session, session.begin():
-        existing_product = await _get_product_by_id(
-            product.product_id,
+        existing_product = await _read_product(
+            product_id,
             session,
         )
 
@@ -106,7 +99,7 @@ async def update_product(
         session.add(existing_product)
         await session.commit()
 
-        return orm_to_pydantic(existing_product, Product)
+        return orm_to_pydantic(existing_product, ProductResponse)
 
 
 async def delete_product(product_id: int) -> None:
@@ -115,7 +108,7 @@ async def delete_product(product_id: int) -> None:
     :param product_id: ID of the product to delete.
     """
     async with AsyncSessionLocal() as session, session.begin():
-        product = await _get_product_by_id(
+        product = await _read_product(
             product_id,
             session,
         )

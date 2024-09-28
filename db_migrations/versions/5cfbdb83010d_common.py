@@ -33,7 +33,7 @@ def upgrade() -> None:
         sa.Column("user_id", sa.Integer(), nullable=False),
         sa.Column("url_path", sa.String(), nullable=False),
         sa.Column("feedback_message", sa.String(), nullable=False),
-        sa.Column("time_created", sa.DateTime(), nullable=False),
+        sa.Column("time_created", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["common.users.user_id"],

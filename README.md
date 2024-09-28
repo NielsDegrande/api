@@ -51,6 +51,7 @@ alembic upgrade head
 ```
 
 Then populate the database. E.g., from the `Pipelines` repository.
+You need to add a user to the database with `python scripts/add_test_user.py`.
 
 ### Start the API
 

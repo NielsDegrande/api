@@ -1,9 +1,9 @@
 """ORM for feedbacks."""
 
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import Column, DateTime, ForeignKey
 from sqlalchemy.orm import (
     Mapped,
     # Pyright error: "mapped_column" is unknown import symbol.
@@ -28,6 +28,15 @@ class Feedbacks(Base):
         primary_key=True,
         autoincrement=True,
     )
+    url_path: Mapped[str] = mapped_column(nullable=False)
+    feedback_message: Mapped[str] = mapped_column(nullable=False)
+    time_created = Column(
+        "time_created",
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(UTC),
+    )
+
     user_id: Mapped[int] = mapped_column(
         ForeignKey(
             f"{config.common.database_schema}.users.user_id",
@@ -37,13 +46,6 @@ class Feedbacks(Base):
         # Put an index on columns you will filter by often.
         index=True,
     )
-    url_path: Mapped[str] = mapped_column(nullable=False)
-    feedback_message: Mapped[str] = mapped_column(nullable=False)
-    time_created: Mapped[datetime] = mapped_column(
-        nullable=False,
-        default=datetime.utcnow,
-    )
-
     # Pyright error: Expression of type "relationship"
     # cannot be assigned to declared type.
     user: Mapped["Users"] = relationship(  # pyright: ignore[reportAssignmentType]

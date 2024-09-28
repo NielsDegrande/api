@@ -3,7 +3,7 @@
 Do not put constants related to an individual part of the app here.
 """
 
-from enum import StrEnum
+from enum import StrEnum, auto
 
 # Extensions.
 YAML_EXTENSION = ".yaml"
@@ -13,5 +13,5 @@ YAML_EXTENSION = ".yaml"
 class ApplicationTag(StrEnum):
     """Tags for FastAPI."""
 
-    COMMON = "common"
-    SAMPLE = "sample"
+    COMMON = auto()
+    SAMPLE = auto()

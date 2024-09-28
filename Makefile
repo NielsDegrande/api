@@ -92,3 +92,8 @@ run_container: build_test
 	docker run -it --rm \
 		--volume ${PWD}/:/app/ \
 		api-test
+
+## generate_openapi: Generate OpenAPI specification.
+.PHONY: generate_openapi
+generate_openapi:
+	python scripts/get_openapi.py

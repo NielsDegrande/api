@@ -1,19 +1,19 @@
 """Service that holds product related business logic."""
 
-from api.sample.dto.product import Product
+from api.sample.dto.product import ProductRequest, ProductResponse
 from api.sample.repositories import product_repository
 
 
-async def get_products() -> list[Product]:
-    """Return all products.
+async def get_products() -> list[ProductResponse]:
+    """Get all products.
 
     :return: All products.
     """
     return await product_repository.read_products()
 
 
-async def get_product(product_id: int) -> Product:
-    """Return the requested product.
+async def get_product(product_id: int) -> ProductResponse:
+    """Get the requested product.
 
     :param product_id: ID of the product to get.
     :return: Matching product.
@@ -22,9 +22,9 @@ async def get_product(product_id: int) -> Product:
 
 
 async def create_product(
-    product: Product,
-) -> Product:
-    """Add a product.
+    product: ProductRequest,
+) -> ProductResponse:
+    """Create a product.
 
     :param product: Product to create.
     :return: Created product.
@@ -33,14 +33,19 @@ async def create_product(
 
 
 async def update_product(
-    product: Product,
-) -> Product:
-    """Update product.
+    product_id: int,
+    product: ProductRequest,
+) -> ProductResponse:
+    """Update a product.
 
+    :param product_id: ID of the product to update.
     :param product: Product to update.
     :return: Updated product.
     """
-    return await product_repository.update_product(product=product)
+    return await product_repository.update_product(
+        product_id=product_id,
+        product=product,
+    )
 
 
 async def delete_product(

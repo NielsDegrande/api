@@ -4,7 +4,7 @@ import pytest
 from fastapi import status
 from httpx import AsyncClient
 
-from api.sample.dto.product import Product
+from api.sample.dto.product import ProductRequest, ProductResponse
 
 
 @pytest.mark.asyncio
@@ -21,7 +21,7 @@ async def test__product_endpoints__expect_no_error(
         product_prefix = "/api/sample/product"
 
         # Create a product.
-        product = Product(
+        product = ProductRequest(
             product_name="test",
             color="test",
             price=5.0,
@@ -33,7 +33,7 @@ async def test__product_endpoints__expect_no_error(
             json=data,
         )
         assert response.status_code == status.HTTP_201_CREATED
-        post_product = Product(**response.json())
+        post_product = ProductResponse(**response.json())
 
         # Read all products.
         response = await client.get(
@@ -49,11 +49,10 @@ async def test__product_endpoints__expect_no_error(
             headers=auth_header,
         )
         assert response.status_code == status.HTTP_200_OK
-        assert Product(**response.json()).price == product.price
+        assert ProductResponse(**response.json()).price == product.price
 
         # Update a product.
-        new_data = Product(
-            product_id=post_product.product_id,
+        new_data = ProductRequest(
             product_name="test",
             color="test",
             price=product.price + 1,
@@ -64,7 +63,7 @@ async def test__product_endpoints__expect_no_error(
             json=new_data,
         )
         assert response.status_code == status.HTTP_200_OK
-        assert Product(**response.json()).price == product.price + 1
+        assert ProductResponse(**response.json()).price == product.price + 1
 
         # Delete a product.
         response = await client.delete(

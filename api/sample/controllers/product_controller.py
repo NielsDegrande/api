@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, status
 
-from api.sample.dto.product import Product
+from api.sample.dto.product import ProductRequest, ProductResponse
 from api.sample.services import product_service
 from api.utils.constants import ApplicationTag
 
@@ -13,7 +13,7 @@ product_router = APIRouter(
 
 
 @product_router.get("")
-async def get_products() -> list[Product]:
+async def get_products() -> list[ProductResponse]:
     """Get all products.
 
     :return: All products.
@@ -22,7 +22,7 @@ async def get_products() -> list[Product]:
 
 
 @product_router.get("/{product_id}")
-async def get_product(product_id: int) -> Product:
+async def get_product(product_id: int) -> ProductResponse:
     """Get a single product.
 
     :param product_id: ID of the product to retrieve.
@@ -36,26 +36,28 @@ async def get_product(product_id: int) -> Product:
     status_code=status.HTTP_201_CREATED,
 )
 async def create_product(
-    product: Product,
-) -> Product:
+    product: ProductRequest,
+) -> ProductResponse:
     """Create a product.
 
     :param product: Product to create.
-    :return: Newly created product.
+    :return: Created product.
     """
-    return await product_service.create_product(product)
+    return await product_service.create_product(product=product)
 
 
 @product_router.put("/{product_id}")
 async def update_product(
-    product: Product,
-) -> Product:
+    product_id: int,
+    product: ProductRequest,
+) -> ProductResponse:
     """Update a product.
 
+    :param product_id: ID of the product to update.
     :param product: Product to update.
     :return: Updated product.
     """
-    return await product_service.update_product(product)
+    return await product_service.update_product(product_id=product_id, product=product)
 
 
 @product_router.delete("/{product_id}")
@@ -66,4 +68,4 @@ async def delete_product(
 
     :param product_id: ID of the product to delete.
     """
-    await product_service.delete_product(product_id)
+    await product_service.delete_product(product_id=product_id)

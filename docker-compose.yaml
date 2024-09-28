@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   db:
     image: postgres:latest
@@ -10,7 +8,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata_transactional:/var/lib/postgresql/data
 
 volumes:
   # Transactional database to support the API.
