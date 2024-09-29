@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.sample.dto.product import ProductRequest, ProductResponse
+from api.sample.dto.product import ProductRequest, ProductResponse, ProductUpdate
 from api.sample.orm.products import Products
 from api.utils.database import (
     AsyncSessionLocal,
@@ -71,7 +71,7 @@ async def read_product(product_id: int) -> ProductResponse:
 
 async def update_product(
     product_id: int,
-    product: ProductRequest,
+    product: ProductUpdate,
 ) -> ProductResponse:
     """Update product.
 
@@ -94,7 +94,8 @@ async def update_product(
 
         # Update fields of the existing product.
         for key, value in product.__dict__.items():
-            setattr(existing_product, key, value)
+            if value:
+                setattr(existing_product, key, value)
 
         session.add(existing_product)
         await session.commit()

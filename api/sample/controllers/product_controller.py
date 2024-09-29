@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, status
 
-from api.sample.dto.product import ProductRequest, ProductResponse
+from api.sample.dto.product import ProductRequest, ProductResponse, ProductUpdate
 from api.sample.services import product_service
 from api.utils.constants import ApplicationTag
 
@@ -49,7 +49,7 @@ async def create_product(
 @product_router.put("/{product_id}")
 async def update_product(
     product_id: int,
-    product: ProductRequest,
+    product: ProductUpdate,
 ) -> ProductResponse:
     """Update a product.
 

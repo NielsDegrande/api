@@ -1,6 +1,6 @@
 """Service that holds product related business logic."""
 
-from api.sample.dto.product import ProductRequest, ProductResponse
+from api.sample.dto.product import ProductRequest, ProductResponse, ProductUpdate
 from api.sample.repositories import product_repository
 
 
@@ -34,7 +34,7 @@ async def create_product(
 
 async def update_product(
     product_id: int,
-    product: ProductRequest,
+    product: ProductUpdate,
 ) -> ProductResponse:
     """Update a product.
 
