@@ -127,11 +127,11 @@
               "path": [
                 "api",
                 "sample",
-                "product"
+                "products"
               ],
               "port": "{{port}}",
               "protocol": "{{protocol}}",
-              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product"
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/products"
             }
           },
           "response": []
@@ -148,12 +148,12 @@
               "path": [
                 "api",
                 "sample",
-                "product",
+                "products",
                 "1"
               ],
               "port": "{{port}}",
               "protocol": "{{protocol}}",
-              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product/1"
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/products/1"
             }
           },
           "response": []
@@ -179,11 +179,11 @@
               "path": [
                 "api",
                 "sample",
-                "product"
+                "products"
               ],
               "port": "{{port}}",
               "protocol": "{{protocol}}",
-              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product"
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/products"
             }
           },
           "response": []
@@ -209,12 +209,12 @@
               "path": [
                 "api",
                 "sample",
-                "product",
+                "products",
                 "1"
               ],
               "port": "{{port}}",
               "protocol": "{{protocol}}",
-              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product/1"
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/products/1"
             }
           },
           "response": []
@@ -231,18 +231,18 @@
               "path": [
                 "api",
                 "sample",
-                "product",
+                "products",
                 "1"
               ],
               "port": "{{port}}",
               "protocol": "{{protocol}}",
-              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/product/1"
+              "raw": "{{protocol}}://{{baseUrl}}:{{port}}/api/sample/products/1"
             }
           },
           "response": []
         }
       ],
-      "name": "Product"
+      "name": "Products"
     }
   ],
   "variable": [

@@ -18,7 +18,7 @@ async def test__product_endpoints__expect_no_error(
     :param auth_header: Authentication header.
     """
     async with async_client as client:
-        product_prefix = "/api/sample/product"
+        product_prefix = "/api/sample/products"
 
         # Create a product.
         product = ProductRequest(

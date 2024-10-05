@@ -26,12 +26,12 @@ authorization:
         path: /api/feedback
     product:
       - method: GET
-        path: /api/sample/product
+        path: /api/sample/products
       - method: GET
-        path: /api/sample/product/[0-9]*
+        path: /api/sample/products/[0-9]*
       - method: POST
-        path: /api/sample/product
+        path: /api/sample/products
       - method: PUT
-        path: /api/sample/product/[0-9]*
+        path: /api/sample/products/[0-9]*
       - method: DELETE
-        path: /api/sample/product/[0-9]*
+        path: /api/sample/products/[0-9]*

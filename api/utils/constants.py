@@ -15,3 +15,11 @@ class ApplicationTag(StrEnum):
 
     COMMON = auto()
     SAMPLE = auto()
+
+
+class AccessLevels(StrEnum):
+    """Access levels."""
+
+    MANAGE = auto()
+    READ = auto()
+    WRITE = auto()

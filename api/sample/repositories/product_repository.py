@@ -5,7 +5,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.sample.dto.product import ProductRequest, ProductResponse, ProductUpdate
+from api.sample.orm.access_rights import ProductAccessRights
 from api.sample.orm.products import Products
+from api.utils.constants import AccessLevels
 from api.utils.database import (
     AsyncSessionLocal,
     orm_to_pydantic,
@@ -26,26 +28,45 @@ async def create_product(product: ProductRequest) -> ProductResponse:
         return orm_to_pydantic(new_product, ProductResponse)
 
 
-async def read_products() -> list[ProductResponse]:
+async def read_products(user_id: int) -> list[ProductResponse]:
     """Read products.
 
+    :param user_id: ID of the user requesting the products.
     :return: All products.
     """
     async with AsyncSessionLocal() as session, session.begin():
-        query = select(Products)
+        query = (
+            select(Products)
+            .join(ProductAccessRights)
+            .where(ProductAccessRights.user_id == user_id)
+        )
         products = (await session.execute(query)).scalars().all()
         return [orm_to_pydantic(product, ProductResponse) for product in products]
 
 
-async def _read_product(product_id: int, session: AsyncSession) -> Products:
+async def _read_product(
+    session: AsyncSession,
+    user_id: int,
+    product_id: int,
+    access_levels: list[AccessLevels] | None = None,
+) -> Products:
     """Read product by ID.
 
-    :param product_id: ID of the product to read.
     :param session: Session to use to query the database.
+    :param user_id: ID of the user requesting the product.
+    :param product_id: ID of the product to read.
+    :param access_levels: Access level required.
     :return: Matching product.
     :raises: HTTPException if no product is found.
     """
-    query = select(Products).where(Products.product_id == product_id)
+    query = (
+        select(Products)
+        .join(ProductAccessRights)
+        .where(ProductAccessRights.user_id == user_id)
+        .where(Products.product_id == product_id)
+    )
+    if access_levels:
+        query = query.where(ProductAccessRights.access_level.in_(access_levels))
     result = await session.execute(query)
     product = result.scalars().first()
     if not product:
@@ -56,25 +77,32 @@ async def _read_product(product_id: int, session: AsyncSession) -> Products:
     return product
 
 
-async def read_product(product_id: int) -> ProductResponse:
+async def read_product(user_id: int, product_id: int) -> ProductResponse:
     """Read product by ID.
 
+    :param user_id: ID of the user requesting the product.
     :param product_id: ID of the product to read.
     :return: Matching product.
     """
     async with AsyncSessionLocal() as session, session.begin():
         return orm_to_pydantic(
-            await _read_product(product_id, session),
+            await _read_product(
+                session=session,
+                user_id=user_id,
+                product_id=product_id,
+            ),
             ProductResponse,
         )
 
 
 async def update_product(
+    user_id: int,
     product_id: int,
     product: ProductUpdate,
 ) -> ProductResponse:
     """Update product.
 
+    :param user_id: ID of the user updating the product.
     :param product_id: ID of the product to update.
     :param product: Product to update.
     :return: Updated product.
@@ -88,8 +116,10 @@ async def update_product(
 
     async with AsyncSessionLocal() as session, session.begin():
         existing_product = await _read_product(
-            product_id,
-            session,
+            session=session,
+            user_id=user_id,
+            product_id=product_id,
+            access_levels=[AccessLevels.MANAGE, AccessLevels.WRITE],
         )
 
         # Update fields of the existing product.
@@ -103,14 +133,20 @@ async def update_product(
         return orm_to_pydantic(existing_product, ProductResponse)
 
 
-async def delete_product(product_id: int) -> None:
+async def delete_product(
+    user_id: int,
+    product_id: int,
+) -> None:
     """Delete a product.
 
+    :param user_id: ID of the user deleting the product.
     :param product_id: ID of the product to delete.
     """
     async with AsyncSessionLocal() as session, session.begin():
         product = await _read_product(
-            product_id,
-            session,
+            session=session,
+            user_id=user_id,
+            product_id=product_id,
+            access_levels=[AccessLevels.MANAGE],
         )
         await session.delete(product)
