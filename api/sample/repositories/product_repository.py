@@ -49,6 +49,8 @@ async def _read_product(
     user_id: int,
     product_id: int,
     access_levels: list[AccessLevels] | None = None,
+    *,
+    with_for_update: bool = False,
 ) -> Products:
     """Read product by ID.
 
@@ -56,6 +58,7 @@ async def _read_product(
     :param user_id: ID of the user requesting the product.
     :param product_id: ID of the product to read.
     :param access_levels: Access level required.
+    :param with_for_update: Lock the document for update.
     :return: Matching product.
     :raises: HTTPException if no product is found.
     """
@@ -67,6 +70,8 @@ async def _read_product(
     )
     if access_levels:
         query = query.where(ProductAccessRights.access_level.in_(access_levels))
+    if with_for_update:
+        query = query.with_for_update()
     result = await session.execute(query)
     product = result.scalars().first()
     if not product:
@@ -120,6 +125,7 @@ async def update_product(
             user_id=user_id,
             product_id=product_id,
             access_levels=[AccessLevels.MANAGE, AccessLevels.WRITE],
+            with_for_update=True,
         )
 
         # Update fields of the existing product.
