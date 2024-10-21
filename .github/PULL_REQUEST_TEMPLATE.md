@@ -11,7 +11,8 @@
 
 - [ ] Added Alembic revision for database schema changes.
 - [ ] Added tests.
+- [ ] Updated the Postman collection.
 - [ ] Commented code.
-- [ ] Updated technical documentation.
+- [ ] Updated technical documentation and README.
 - [ ] Performed self-review.
 - [ ] Verified the build (remote CI passes).

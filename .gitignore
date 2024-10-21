@@ -158,3 +158,6 @@ test-reports
 
 # OpenAPI
 openapi.json
+
+# Logs
+logs/
