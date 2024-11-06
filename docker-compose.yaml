@@ -8,8 +8,9 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - pgdata_transactional:/var/lib/postgresql/data
+      - pgdata_transactional_template:/var/lib/postgresql/data
 
 volumes:
   # Transactional database to support the API.
-  pgdata_transactional:
+  # TODO: Replace template reference below.
+  pgdata_transactional_template:

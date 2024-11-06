@@ -1,10 +1,13 @@
 """Launch the API locally."""
 
 import argparse
+import logging
 
 import uvicorn
 
 from api.utils.log import read_logging_config
+
+log_ = logging.getLogger(__name__)
 
 
 def main() -> None:

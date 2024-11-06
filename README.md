@@ -44,7 +44,8 @@ Start the database:
 docker compose up -d
 ```
 
-Ensure the database is up-to-date with the latest schemas and tables:
+Upon API startup the database will be automatically migrated.
+It can be done manually using:
 
 ```shell
 alembic upgrade head
