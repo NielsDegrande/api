@@ -23,17 +23,10 @@ brew install shellcheck
 
 ### Configure Environment Variables
 
-```shell
-# Database Configuration.
-echo 'DB_DIALECT=postgresql+asyncpg' >> .env
-echo 'DB_HOST=localhost' >> .env
-echo 'DB_PORT=5432' >> .env
-echo 'DB_NAME=db' >> .env
-echo 'DB_USER=postgres' >> .env
-echo 'DB_PASSWORD=password' >> .env
+Copy the `.env.example` file to `.env` and fill in the values.
 
-# Google Cloud Storage (GCS).
-echo 'GCS_BUCKET_NAME=bucket' >> .env
+```shell
+cp .env.example .env
 ```
 
 ### Database Setup
