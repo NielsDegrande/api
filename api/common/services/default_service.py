@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 
 from api.common.repositories import default_repository
 from api.config import config
-from api.utils.gcs import generate_download_signed_url_v4
+from api.utils.gcs import get_signed_url
 
 
 async def check_db() -> None:
@@ -31,7 +31,7 @@ async def download_file(
     :return: Download link.
     """
     file_path = file_path.strip()
-    return generate_download_signed_url_v4(
+    return await get_signed_url(
         bucket_name=bucket_name,
         blob_name=file_path,
         expiration_in_minutes=expiration_in_minutes,

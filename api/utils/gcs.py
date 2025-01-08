@@ -1,58 +1,73 @@
 """Utils to interact with GCS."""
 
-import datetime
-from functools import cache, lru_cache
+import logging
+from pathlib import Path
 
-from google.cloud.storage import Bucket, Client
+import aiofiles
+import aiohttp
+from async_lru import alru_cache
+from gcloud.aio.storage import Storage
 
-
-@cache
-def _get_bucket(bucket_name: str) -> Bucket:
-    """Get bucket to interact with.
-
-    :param bucket_name: Name of the GCS bucket.
-    :return: Bucket to interact with.
-    """
-    client = Client()
-    return client.get_bucket(bucket_name)
+log_ = logging.getLogger(__name__)
 
 
-@lru_cache(maxsize=32)
-def read_bytes(
-    bucket_name: str,
-    file_path: str,
-) -> bytes:
-    """Read bytes from GCS.
+# NOTE: Validate if you want caching here.
+@alru_cache(maxsize=32)
+async def read_bytes(bucket_name: str, file_path: str) -> bytes:
+    """Read bytes from GCS asynchronously.
 
     :param bucket_name: Name of the GCS bucket.
     :param file_path: Path to bytes to read.
     :return: Content at file path.
     """
-    blob = _get_bucket(bucket_name).blob(file_path)
-    return blob.download_as_bytes()
+    async with Storage() as client:
+        return await client.download(
+            bucket_name,
+            file_path,
+        )
 
 
-def generate_download_signed_url_v4(
+async def upload_bytes(
+    source_file_path: Path,
+    bucket_name: str,
+    object_name: str,
+) -> None:
+    """Upload bytes to GCS asynchronously.
+
+    :param source_file_path: Path to bytes to read.
+    :param bucket_name: Name of the GCS bucket.
+    :param object_name: Name of the object to create.
+    """
+    async with aiohttp.ClientSession() as session:
+        client = Storage(session=session)
+
+        async with aiofiles.open(source_file_path) as file_:
+            output = await file_.read()
+            status = await client.upload(
+                bucket_name,
+                object_name,
+                output,
+            )
+            log_.info("Upload status: %s", status)
+
+
+async def get_signed_url(
     bucket_name: str,
     blob_name: str,
     expiration_in_minutes: int,
 ) -> str:
-    """Generate a v4 signed URL for downloading a blob.
+    """Get signed URL for downloading a blob asynchronously.
 
-    Note that this method requires a service account key file. You can not use
-    this if you are using Application Default Credentials from Google Compute
-    Engine or from the Google Cloud SDK.
+    Note that this method requires a service account key file.
+    You can not use this if you are using Application Default Credentials
+    from Google Compute Engine or from the Google Cloud SDK.
 
     :param bucket_name: Name of the bucket containing the blob to download.
     :param blob_name: Name of the blob to download.
     :param expiration_in_minutes: Expiration time of the signed URL, in minutes.
     :return: Download signed URL.
     """
-    blob = _get_bucket(bucket_name).blob(blob_name)
-    return blob.generate_signed_url(
-        version="v4",
-        # This URL is valid for 15 minutes.
-        expiration=datetime.timedelta(minutes=expiration_in_minutes),
-        # Allow GET requests using this URL.
-        method="GET",
-    )
+    storage = Storage()
+    bucket = storage.get_bucket(bucket_name)
+    blob = await bucket.get_blob(blob_name)
+    return await blob.get_signed_url(expiration=expiration_in_minutes * 60)
