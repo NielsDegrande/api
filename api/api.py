@@ -57,13 +57,12 @@ async def exception_handler(request: Request, error: Exception) -> JSONResponse:
     :param error: Exception raised by application
     :return: Response to client
     """
-    log_.exception(error)
+    log_.exception(traceback.format_exc())
     content = {
         "message": "Something went wrong.",
         "url": str(request.url),
         "sender": str(request.client),
         "exception_args": [repr(x) for x in error.args],
-        "trace": traceback.format_exc().split("\n"),
     }
     return JSONResponse(
         status_code=500,
