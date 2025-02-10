@@ -25,7 +25,7 @@ httptools = "^0.6.1"
 python-box = "~7.3"
 python-dotenv = "^1.0.1"
 pyyaml = "^6.0.2"
-sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.37" }
+sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.38" }
 uvicorn = { extras = [ "standard" ], version = "^0.34.0" }
 uvloop = "^0.21.0"
 
