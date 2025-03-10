@@ -13,7 +13,7 @@ api = "api.__main__:main"
 [tool.poetry.dependencies]
 python = "^3.12"
 aiofiles = "23.2.1"
-alembic = "^1.14.1"
+alembic = "^1.15.1"
 async-lru = "^2.0.4"
 asyncpg = "^0.30.0"
 bcrypt = "^4.3.0"
