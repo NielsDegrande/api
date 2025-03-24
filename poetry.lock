@@ -1169,20 +1169,20 @@ pyjwt = ">=1.5.3,<3.0.0"
 
 [[package]]
 name = "gcloud-aio-storage"
-version = "9.3.0"
+version = "9.4.0"
 description = "Python Client for Google Cloud Storage"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "gcloud_aio_storage-9.3.0-py3-none-any.whl", hash = "sha256:2ef9bd22eb3545a912a495b551aa58c1c2a177e72e4ed03a64665fceb02cf650"},
-    {file = "gcloud_aio_storage-9.3.0.tar.gz", hash = "sha256:23664a36b2c3ff9135035b3e9bcf512e0a0c17b874e305985098f000de4de399"},
+    {file = "gcloud_aio_storage-9.4.0-py3-none-any.whl", hash = "sha256:9f119cc4d85223c30a9663f77668766c6715cb0b439746a2cb23f916a2cb7e13"},
+    {file = "gcloud_aio_storage-9.4.0.tar.gz", hash = "sha256:a9a97e4cc87482b6737886b8bd8ae01475c6fc357a4fdb1f2464391b7b5d5d75"},
 ]
 
 [package.dependencies]
-aiofiles = ">=0.6.0,<24.0.0"
+aiofiles = ">=0.6.0,<25.0.0"
 gcloud-aio-auth = ">=5.3.0,<6.0.0"
-pyasn1-modules = ">=0.2.1,<0.4.1"
+pyasn1-modules = ">=0.2.1,<0.4.2"
 rsa = ">=3.1.4,<5.0.0"
 
 [[package]]
@@ -3847,4 +3847,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "83e115dd564ced367623eb852235e363c09b74cc966004940b5fda05e4d5ec20"
+content-hash = "0264209614030dbc903822b5bb9906d8baa387fdd4aa4217bcbb7222675866da"
