@@ -27,7 +27,7 @@ python-box = "~7.3"
 python-dotenv = "^1.1.0"
 pyyaml = "^6.0.2"
 sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.40" }
-uvicorn = { extras = [ "standard" ], version = "^0.34.0" }
+uvicorn = { extras = [ "standard" ], version = "^0.34.1" }
 uvloop = "^0.21.0"
 
 [tool.poetry.group.test]
