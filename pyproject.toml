@@ -35,7 +35,7 @@ optional = true
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.28.1"
-pip-audit = "^2.8.0"
+pip-audit = "^2.9.0"
 pre-commit = "~4.2"
 pyright = "^1.1.398"
 pytest = "~8.3"
