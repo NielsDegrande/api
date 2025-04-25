@@ -24,12 +24,12 @@ repos:
       - id: sort-simple-yaml
       - id: trailing-whitespace
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.42.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint
         args: ["--ignore", "docs/_*.md"]
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.13.0
+    rev: v9.22.0
     hooks:
       - id: eslint
         additional_dependencies:
@@ -38,14 +38,10 @@ repos:
         files: \.toml$ # Only lint toml files
         types: [file]
         args: ["--fix"]
-  - repo: https://github.com/ambv/black
-    rev: 24.10.0
-    hooks:
-      - id: black
-        language_version: python3
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.7.0
+    rev: v0.9.10
     hooks:
+      - id: ruff-format
       - id: ruff
         args:
           - --fix
@@ -59,18 +55,18 @@ repos:
       - id: detect-missing-init
         args: ["--python-folders", "api"]
   - repo: https://github.com/sqlfluff/sqlfluff
-    rev: 3.2.4
+    rev: 3.3.1
     hooks:
       - id: sqlfluff-fix
       - id: sqlfluff-lint
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: codespell
         types_or: [python, markdown]
         additional_dependencies: [tomli]
   - repo: https://github.com/jendrikseipp/vulture
-    rev: "v2.13"
+    rev: "v2.14"
     hooks:
       - id: vulture
         args: ["api", "--min-confidence=80"]
@@ -84,11 +80,11 @@ repos:
     hooks:
       - id: poetry-sort
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.18.0
+    rev: v3.19.1
     hooks:
       - id: pyupgrade
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.1
+    rev: v8.24.0
     hooks:
       - id: gitleaks
   # Ensure parity by running `pyright` locally.
