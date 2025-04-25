@@ -1,10 +1,12 @@
 .cache
+.coverage
 .direnv
 .env
 .github
 .ruff_cache
+.venv
 .vscode
 backups
-data
+logs
 test-reports
 venv

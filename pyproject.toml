@@ -1,65 +1,59 @@
-[tool.poetry]
+[project]
 name = "api"
 version = "0.1.0"
 description = "API repository."
-authors = [ "Niels Degrande <niels@degran.de>" ]
-license = "Other/Proprietary"
+authors = [ { name = "Niels Degrande", email = "niels@degran.de" } ]
+license = { text = "Other/Proprietary" }
 readme = "README.md"
-packages = []
+requires-python = ">=3.13,<4.0"
+dependencies = [
+    "aiofiles==24.1.0",
+    "alembic>=1.15.2",
+    "async-lru>=2.0.5",
+    "asyncpg>=0.30.0",
+    "bcrypt>=4.3.0",
+    "coloredlogs~=15.0",
+    "fastapi>=0.115.12",
+    "gcloud-aio-storage>=9.4.0",
+    "google-cloud-storage>=3.1.0",
+    "httptools>=0.6.1",
+    "python-box~=7.3",
+    "python-dotenv>=1.1.0",
+    "pyyaml>=6.0.2",
+    "sqlalchemy[asyncio]>=2.0.40",
+    "uvicorn[standard]>=0.34.2",
+    "uvloop>=0.21.0",
+]
 
-[tool.poetry.scripts]
+[project.scripts]
 api = "api.__main__:main"
 
-[tool.poetry.dependencies]
-python = "^3.12"
-aiofiles = "24.1.0"
-alembic = "^1.15.2"
-async-lru = "^2.0.5"
-asyncpg = "^0.30.0"
-bcrypt = "^4.3.0"
-coloredlogs = "~15.0"
-fastapi = "^0.115.12"
-gcloud-aio-storage = "^9.4.0"
-google-cloud-storage = "^3.1.0"
-httptools = "^0.6.1"
-jinja2 = "^3.1.6"  # Pin Jinja2 given pip-audit issue.
-python-box = "~7.3"
-python-dotenv = "^1.1.0"
-pyyaml = "^6.0.2"
-sqlalchemy = { extras = [ "asyncio" ], version = "^2.0.40" }
-uvicorn = { extras = [ "standard" ], version = "^0.34.2" }
-uvloop = "^0.21.0"
-
-[tool.poetry.group.test]
-optional = true
-
-[tool.poetry.group.test.dependencies]
-httpx = "^0.28.1"
-pip-audit = "^2.9.0"
-pre-commit = "~4.2"
-pyright = "^1.1.399"
-pytest = "~8.3"
-pytest-asyncio = "^0.26.0"
-pytest-cov = "~6.1"
-pytest-mock = "~3.14"
-pytest-timeout = "~2.3"
-pytest-xdist = "~3.6"
-
-[tool.poetry.group.dev]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-add-trailing-comma = "*"
-black = "*"
-codespell = "*"
-ipython = "*"
-isort = "*"
-pre-commit = "*"
-ruff = "*"
-sqlalchemy2-stubs = "*"
-sqlfluff = "*"
-types-PyYAML = "*"
-vulture = "*"
+[dependency-groups]
+dev = [
+    "add-trailing-comma",
+    "black",
+    "codespell",
+    "ipython",
+    "isort",
+    "pre-commit",
+    "ruff",
+    "sqlalchemy2-stubs",
+    "sqlfluff",
+    "types-PyYAML",
+    "vulture",
+]
+test = [
+    "httpx>=0.28.1",
+    "pip-audit>=2.9.0",
+    "pre-commit~=4.2",
+    "pyright>=1.1.399",
+    "pytest~=8.3",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov~=6.1",
+    "pytest-mock~=3.14",
+    "pytest-timeout~=2.3",
+    "pytest-xdist~=3.6",
+]
 
 [tool.pytest.ini_options]
 timeout = "60"
@@ -116,6 +110,9 @@ ignore = [
 # Do not complain if tests use the assert keyword.
 "tests/*" = [ "S101" ]
 
+[tool.uv]
+default-groups = []
+
 [build-system]
-requires = [ "poetry-core" ]
-build-backend = "poetry.core.masonry.api"
+requires = [ "hatchling" ]
+build-backend = "hatchling.build"

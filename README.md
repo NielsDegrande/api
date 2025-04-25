@@ -8,9 +8,9 @@ This repository holds the API.
 
 ### Installation
 
+Set up your development environment:
+
 ```shell
-python3 -m venv venv
-source venv/bin/activate
 make install_dev
 ```
 
