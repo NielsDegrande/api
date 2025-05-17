@@ -15,7 +15,7 @@ async def read_user(username: str) -> User:
     :return: Matching user.
     """
     async with AsyncSessionLocal() as session, session.begin():
-        query = select(Users).where(Users.username == username)
+        query = select(Users).where(Users.username == username)  # pyright: ignore[reportArgumentType]
         result = await session.execute(query)
         user = result.scalars().first()
 

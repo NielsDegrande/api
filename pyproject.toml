@@ -20,7 +20,7 @@ dependencies = [
     "python-box~=7.3",
     "python-dotenv>=1.1.0",
     "pyyaml>=6.0.2",
-    "sqlalchemy[asyncio]>=2.0.40",
+    "sqlmodel>=0.0.16",
     "uvicorn[standard]>=0.34.2",
     "uvloop>=0.21.0",
 ]
@@ -37,7 +37,6 @@ dev = [
     "isort",
     "pre-commit",
     "ruff",
-    "sqlalchemy2-stubs",
     "sqlfluff",
     "types-PyYAML",
     "vulture",

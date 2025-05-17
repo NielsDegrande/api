@@ -36,9 +36,9 @@ async def read_products(user_id: int) -> list[ProductResponse]:
     """
     async with AsyncSessionLocal() as session, session.begin():
         query = (
-            select(Products)
+            select(Products)  # pyright: ignore[reportCallIssue]
             .join(ProductAccessRights)
-            .where(ProductAccessRights.user_id == user_id)
+            .where(ProductAccessRights.user_id == user_id)  # pyright: ignore[reportArgumentType]
         )
         products = (await session.execute(query)).scalars().all()
         return [orm_to_pydantic(product, ProductResponse) for product in products]
@@ -63,13 +63,13 @@ async def _read_product(
     :raises: HTTPException if no product is found.
     """
     query = (
-        select(Products)
+        select(Products)  # pyright: ignore[reportCallIssue]
         .join(ProductAccessRights)
-        .where(ProductAccessRights.user_id == user_id)
-        .where(Products.product_id == product_id)
+        .where(ProductAccessRights.user_id == user_id)  # pyright: ignore[reportArgumentType]
+        .where(Products.product_id == product_id)  # pyright: ignore[reportArgumentType]
     )
     if access_levels:
-        query = query.where(ProductAccessRights.access_level.in_(access_levels))
+        query = query.where(ProductAccessRights.access_level.in_(access_levels))  # pyright: ignore[reportAttributeAccessIssue]
     if with_for_update:
         query = query.with_for_update()
     result = await session.execute(query)

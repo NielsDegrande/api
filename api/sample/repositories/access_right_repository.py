@@ -56,13 +56,13 @@ async def _read_access_right(
     """
     async with AsyncSessionLocal() as session, session.begin():
         query = (
-            select(ProductAccessRights, Users.username)
+            select(ProductAccessRights, Users.username)  # pyright: ignore[reportCallIssue,reportArgumentType]
             .join(Users)
             .where(
                 and_(
                     ProductAccessRights.user_id == user_id,
                     ProductAccessRights.product_id == product_id,
-                ),
+                )  # pyright: ignore[reportArgumentType]
             )
         )
         result = (await session.execute(query)).first()
