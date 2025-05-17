@@ -14,8 +14,8 @@ from sqlalchemy.pool import (
     AsyncAdaptedQueuePool,
     NullPool,
 )
+from sqlmodel import SQLModel
 
-from api.common.orm.base import Base
 from api.config import config
 
 
@@ -59,7 +59,7 @@ TypeVarBaseModel = TypeVar("TypeVarBaseModel", bound=BaseModel)
 # Pyright warning: Variable not allowed in type expression.
 TypeVarORMModel = TypeVar(
     "TypeVarORMModel",
-    bound=Base,  # pyright: ignore[reportInvalidTypeForm]
+    bound=SQLModel,  # pyright: ignore[reportInvalidTypeForm]
 )
 
 
