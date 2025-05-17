@@ -38,7 +38,7 @@ async def read_products(user_id: int) -> list[ProductResponse]:
         query = (
             select(Products)
             .join(ProductAccessRights)
-            .where(ProductAccessRights.user_id == user_id)
+            .where(ProductAccessRights.user_id == user_id)  # pyright: ignore[reportArgumentType]
         )
         products = (await session.execute(query)).scalars().all()
         return [orm_to_pydantic(product, ProductResponse) for product in products]
@@ -65,11 +65,11 @@ async def _read_product(
     query = (
         select(Products)
         .join(ProductAccessRights)
-        .where(ProductAccessRights.user_id == user_id)
-        .where(Products.product_id == product_id)
+        .where(ProductAccessRights.user_id == user_id)  # pyright: ignore[reportArgumentType]
+        .where(Products.product_id == product_id)  # pyright: ignore[reportArgumentType]
     )
     if access_levels:
-        query = query.where(ProductAccessRights.access_level.in_(access_levels))
+        query = query.where(ProductAccessRights.access_level.in_(access_levels))  # pyright: ignore[reportAttributeAccessIssue]
     if with_for_update:
         query = query.with_for_update()
     result = await session.execute(query)

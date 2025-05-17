@@ -2,12 +2,7 @@
 
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy.orm import (
-    Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
-    relationship,
-)
+from sqlmodel import Field, Relationship
 
 from api.common.orm.base import Base
 from api.config import config
@@ -16,24 +11,16 @@ if TYPE_CHECKING:
     from api.common.orm.feedbacks import Feedbacks
 
 
-class Users(Base):
+class Users(Base, table=True):
     """ORM class to represent a user."""
 
-    __tablename__ = "users"
+    __tablename__: ClassVar[str] = "users"
     __table_args__: ClassVar = {"schema": config.common.database_schema}
 
-    user_id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-        nullable=False,
-    )
-    username: Mapped[str] = mapped_column(nullable=False)
-    password_hash: Mapped[str] = mapped_column(nullable=False)
-    roles: Mapped[str] = mapped_column(nullable=True)
+    user_id: int | None = Field(default=None, primary_key=True)
+    username: str
+    password_hash: str
+    roles: str | None = None
 
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    feedbacks: Mapped["Feedbacks"] = relationship(  # pyright: ignore[reportAssignmentType]
-        "Feedbacks",
-        back_populates="user",
-    )
+    # Relationship to feedback entries for this user.
+    feedbacks: list["Feedbacks"] = Relationship(back_populates="user")

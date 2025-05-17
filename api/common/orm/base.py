@@ -1,5 +1,6 @@
 """Base ORM."""
 
-from sqlalchemy.orm import declarative_base
+from sqlmodel import SQLModel
 
-Base = declarative_base()
+# Use SQLModel as the declarative base for all ORM models.
+Base = SQLModel

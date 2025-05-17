@@ -2,13 +2,8 @@
 
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import (
-    Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
-    relationship,
-)
+from sqlalchemy import Column, ForeignKey
+from sqlmodel import Field, Relationship
 
 from api.common.orm.base import Base
 from api.config import config
@@ -19,42 +14,35 @@ if TYPE_CHECKING:
     from api.sample.orm.products import Products
 
 
-class ProductAccessRights(Base):
+class ProductAccessRights(Base, table=True):
     """ORM class to represent product access rights."""
 
-    __tablename__ = "access_rights"
+    __tablename__: ClassVar[str] = "access_rights"
     __table_args__: ClassVar = {"schema": config.sample.database_schema}
 
-    access_right_id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-    )
-    access_level: Mapped[AccessLevels] = mapped_column(nullable=False)
+    access_right_id: int | None = Field(default=None, primary_key=True)
+    access_level: AccessLevels
 
-    product_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            f"{config.sample.database_schema}.products.product_id",
-            name="fk_products_access_rights_product_id",
-            ondelete="CASCADE",
+    product_id: int = Field(
+        foreign_key=f"{config.sample.database_schema}.products.product_id",
+        sa_column=Column(
+            ForeignKey(
+                f"{config.sample.database_schema}.products.product_id",
+                name="fk_products_access_rights_product_id",
+                ondelete="CASCADE",
+            ),
         ),
-        nullable=False,
-    )
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    concept: Mapped["Products"] = relationship(  # pyright: ignore[reportAssignmentType]
-        "Products",
-    )
+    )  # pyright: ignore[reportCallIssue]
+    concept: "Products" = Relationship()
 
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            f"{config.common.database_schema}.users.user_id",
-            name="fk_users_access_rights_user_id",
-            ondelete="CASCADE",
+    user_id: int = Field(
+        foreign_key=f"{config.common.database_schema}.users.user_id",
+        sa_column=Column(
+            ForeignKey(
+                f"{config.common.database_schema}.users.user_id",
+                name="fk_users_access_rights_user_id",
+                ondelete="CASCADE",
+            ),
         ),
-        nullable=False,
-    )
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    user: Mapped["Users"] = relationship(  # pyright: ignore[reportAssignmentType]
-        "Users",
-    )
+    )  # pyright: ignore[reportCallIssue]
+    user: "Users" = Relationship()

@@ -4,7 +4,7 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.engine import Connection
 
 from api.common.orm.base import Base
 from api.utils.database import create_connection_string, engine
@@ -48,15 +48,13 @@ def run_migrations_offline() -> None:
         context.run_migrations()
 
 
-def _run_sync_migration(connection: AsyncConnection) -> None:
+def _run_sync_migration(connection: Connection) -> None:
     """Run migration synchronously.
 
     :param connection: Connection to use for the migration.
     """
     context.configure(
-        # Pyright error: Argument of type "AsyncConnection" cannot be assigned
-        # to parameter of type "Connection".
-        connection=connection,  # type: ignore[reportGeneralTypeIssues]
+        connection=connection,
         target_metadata=target_metadata,
         # Required as we are using a non-default schema.
         include_schemas=True,
