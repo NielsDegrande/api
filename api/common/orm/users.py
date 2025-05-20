@@ -1,39 +1,24 @@
-"""ORM for users."""
+"""ORM for users using SQLModel."""
 
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, List
 
-from sqlalchemy.orm import (
-    Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
-    relationship,
-)
+from sqlmodel import Field, Relationship, SQLModel
 
-from api.common.orm.base import Base
 from api.config import config
 
 if TYPE_CHECKING:
     from api.common.orm.feedbacks import Feedbacks
 
 
-class Users(Base):
-    """ORM class to represent a user."""
+class Users(SQLModel, table=True):
+    """SQLModel class to represent a user."""
 
     __tablename__ = "users"
     __table_args__: ClassVar = {"schema": config.common.database_schema}
 
-    user_id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-        nullable=False,
-    )
-    username: Mapped[str] = mapped_column(nullable=False)
-    password_hash: Mapped[str] = mapped_column(nullable=False)
-    roles: Mapped[str] = mapped_column(nullable=True)
+    user_id: int | None = Field(default=None, primary_key=True, nullable=False) # autoincrement is True by default
+    username: str = Field(nullable=False)
+    password_hash: str = Field(nullable=False)
+    roles: str | None = Field(default=None, nullable=True) # Assuming roles can be optional
 
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    feedbacks: Mapped["Feedbacks"] = relationship(  # pyright: ignore[reportAssignmentType]
-        "Feedbacks",
-        back_populates="user",
-    )
+    feedbacks: List["Feedbacks"] = Relationship(back_populates="user")

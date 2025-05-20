@@ -1,27 +1,26 @@
-"""ORM for products."""
+"""ORM for products using SQLModel."""
 
-from typing import ClassVar
+from typing import ClassVar, List, TYPE_CHECKING
 
-from sqlalchemy.orm import (
-    Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
-)
+from sqlmodel import Field, Relationship, SQLModel
 
-from api.common.orm.base import Base
 from api.config import config
 
+if TYPE_CHECKING:
+    from api.sample.orm.access_rights import ProductAccessRights
 
-class Products(Base):
-    """ORM class to represent feedback."""
+
+class Products(SQLModel, table=True):
+    """SQLModel class to represent a product."""
 
     __tablename__ = "products"
     __table_args__: ClassVar = {"schema": config.sample.database_schema}
 
-    product_id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-    )
-    product_name: Mapped[str] = mapped_column(nullable=False)
-    color: Mapped[str] = mapped_column(nullable=False)
-    price: Mapped[float] = mapped_column(nullable=False)
+    product_id: int | None = Field(default=None, primary_key=True)
+    product_name: str = Field(nullable=False)
+    color: str = Field(nullable=False)
+    price: float = Field(nullable=False)
+
+    # Relationship to ProductAccessRights
+    # One product can have multiple access right entries associated with it.
+    access_rights: List["ProductAccessRights"] = Relationship(back_populates="product")

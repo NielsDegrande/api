@@ -1,21 +1,14 @@
 """Database utilities."""
 
 import sys
-from typing import TypeVar
 
 from box import Box
-from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import (
-    # "async_sessionmaker" is unknown import symbol.
-    async_sessionmaker,  # pyright: ignore[reportAttributeAccessIssue]
-    create_async_engine,
-)
-from sqlalchemy.pool import (
-    AsyncAdaptedQueuePool,
-    NullPool,
-)
+from sqlalchemy.pool import NullPool, QueuePool # SQLModel uses standard QueuePool
+# SQLModel import removed as it's not directly used after removing TypeVars
+from sqlmodel.ext.asyncio.session import AsyncSession, create_async_engine # Updated imports
+from sqlalchemy.orm import sessionmaker # For creating AsyncSessionLocal
+# TypeVar import removed as it's no longer used
 
-from api.common.orm.base import Base
 from api.config import config
 
 
@@ -46,45 +39,16 @@ engine = create_async_engine(
     create_connection_string(),
     future=True,
     # AsyncIO pytest works with NullPool.
-    poolclass=NullPool if "pytest" in sys.modules else AsyncAdaptedQueuePool,
+    # SQLModel's create_async_engine handles async adaptation, so use QueuePool directly.
+    poolclass=NullPool if "pytest" in sys.modules else QueuePool,
 )
-AsyncSessionLocal = async_sessionmaker(
+
+# Create an async session maker using SQLModel's AsyncSession
+AsyncSessionLocal = sessionmaker(
     bind=engine,
-    # Require explicit refreshes for performance reasons.
+    class_=AsyncSession,
     expire_on_commit=False,
 )
 
-
-TypeVarBaseModel = TypeVar("TypeVarBaseModel", bound=BaseModel)
-# Pyright warning: Variable not allowed in type expression.
-TypeVarORMModel = TypeVar(
-    "TypeVarORMModel",
-    bound=Base,  # pyright: ignore[reportInvalidTypeForm]
-)
-
-
-def orm_to_pydantic(
-    # Pyright warning: TypeVar appears only once in generic function signature.
-    orm_object: TypeVarORMModel,  # pyright: ignore[reportInvalidTypeVarUse]
-    pydantic_class: type[TypeVarBaseModel],
-) -> TypeVarBaseModel:
-    """Convert an ORM object to a Pydantic object.
-
-    :param orm_object: ORM object to convert.
-    :param pydantic_class: Pydantic class of the resulting object.
-    :return: A valid Pydantic object.
-    """
-    return pydantic_class.model_validate(orm_object, from_attributes=True)
-
-
-def pydantic_to_orm(
-    pydantic_object: BaseModel,
-    orm_class: type[TypeVarORMModel],
-) -> TypeVarORMModel:
-    """Convert a Pydantic object to an ORM object.
-
-    :param pydantic_object: Pydantic object to convert.
-    :param orm_class: ORM class of the resulting object.
-    :return: Converted ORM object.
-    """
-    return orm_class(**pydantic_object.model_dump())
+# SQLModel models are Pydantic models. These helper functions are no longer needed.
+# TypeVarBaseModel and TypeVarORMModel are also removed as they were only used by these functions.

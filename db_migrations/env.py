@@ -5,8 +5,15 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlmodel import SQLModel # Import SQLModel
 
-from api.common.orm.base import Base
+# Import all ORM models so they are registered with SQLModel.metadata
+# before target_metadata is used.
+from api.common.orm import users, feedbacks # noqa: F401 (imported for side-effects)
+from api.sample.orm import products, access_rights # noqa: F401 (imported for side-effects)
+# Add other model imports here if any, e.g.:
+# from api.another_feature.orm import models_for_another_feature # noqa: F401
+
 from api.utils.database import create_connection_string, engine
 
 # This is the Alembic Config object, which provides
@@ -20,7 +27,7 @@ if config.config_file_name is not None:
 
 # Add your model's MetaData object here
 # for 'autogenerate' support.
-target_metadata = Base.metadata
+target_metadata = SQLModel.metadata # Use SQLModel's metadata
 
 
 def run_migrations_offline() -> None:

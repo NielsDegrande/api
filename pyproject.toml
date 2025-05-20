@@ -5,7 +5,7 @@ description = "API repository."
 authors = [ { name = "Niels Degrande", email = "niels@degran.de" } ]
 license = { text = "Other/Proprietary" }
 readme = "README.md"
-requires-python = ">=3.13,<4.0"
+requires-python = ">=3.10,<4.0"
 dependencies = [
     "aiofiles==24.1.0",
     "alembic>=1.15.2",
@@ -20,7 +20,7 @@ dependencies = [
     "python-box~=7.3",
     "python-dotenv>=1.1.0",
     "pyyaml>=6.0.2",
-    "sqlalchemy[asyncio]>=2.0.40",
+    "sqlmodel>=0.0.19", # Assuming latest version for now, can be adjusted by uv compile
     "uvicorn[standard]>=0.34.2",
     "uvloop>=0.21.0",
 ]

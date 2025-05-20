@@ -1,158 +1,166 @@
-"""Products repository."""
+"""Products repository using SQLModel."""
 
-from fastapi import HTTPException, status
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select, SQLModel
+from sqlalchemy.sql.expression import Select // For type hinting if constructing complex selects
 
-from api.sample.dto.product import ProductRequest, ProductResponse, ProductUpdate
-from api.sample.orm.access_rights import ProductAccessRights
-from api.sample.orm.products import Products
+from api.sample.orm.products import Products # SQLModel ORM
+from api.sample.orm.access_rights import ProductAccessRights # SQLModel ORM
+from api.common.repositories.default_repository import DefaultRepository
 from api.utils.constants import AccessLevels
-from api.utils.database import (
-    AsyncSessionLocal,
-    orm_to_pydantic,
-    pydantic_to_orm,
-)
+from api.utils.database import AsyncSessionLocal # Renamed to avoid conflict with session instance
+
+# Assuming these DTOs are Pydantic models. If not, they'd need to be defined/converted.
+from api.sample.dto.product import ProductRequest as ProductCreateSchema
+from api.sample.dto.product import ProductUpdate as ProductUpdateSchema
+# ProductResponse DTO would be used by the service layer after getting Products model.
 
 
-async def create_product(product: ProductRequest) -> ProductResponse:
-    """Create product.
-
-    :param product: Product to create.
-    :return: Created product.
+class ProductRepository(DefaultRepository[Products, ProductUpdateSchema]):
     """
-    new_product = pydantic_to_orm(product, Products)
-    async with AsyncSessionLocal() as session, session.begin():
-        session.add(new_product)
-        await session.commit()
-        return orm_to_pydantic(new_product, ProductResponse)
-
-
-async def read_products(user_id: int) -> list[ProductResponse]:
-    """Read products.
-
-    :param user_id: ID of the user requesting the products.
-    :return: All products.
+    Repository for managing products with access control.
+    Inherits basic CRUD from DefaultRepository and adds custom methods for access-controlled operations.
     """
-    async with AsyncSessionLocal() as session, session.begin():
-        query = (
+
+    def __init__(self) -> None:
+        """Initialize the product repository."""
+        super().__init__(Products)
+
+    async def create_product_from_schema(self, product_data: ProductCreateSchema) -> Products:
+        """
+        Create a new product from schema data.
+        This method assumes that product_data is a Pydantic model (e.g., ProductRequest).
+
+        :param product_data: Data for creating the product (e.g., name, color, price).
+        :return: The created Products ORM instance.
+        """
+        # The field names in ProductCreateSchema must match the arguments for Products model
+        product_orm = Products(**product_data.model_dump())
+        return await self.create(product_orm) # Uses DefaultRepository.create
+
+    async def list_products_for_user(self, user_id: int) -> list[Products]:
+        """
+        Read products accessible by a specific user.
+
+        :param user_id: ID of the user requesting the products.
+        :return: List of accessible Products ORM instances.
+        """
+        async with AsyncSessionLocal() as session:
+            statement = (
+                select(Products)
+                .join(ProductAccessRights, Products.product_id == ProductAccessRights.product_id)
+                .where(ProductAccessRights.user_id == user_id)
+            )
+            result = await session.exec(statement)
+            return result.all()
+
+    async def _get_product_for_user_with_access_check(
+        self,
+        session: AsyncSessionLocal, # Type hint for the session instance
+        user_id: int,
+        product_id: int,
+        access_levels: list[AccessLevels] | None = None,
+        with_for_update: bool = False,
+    ) -> Products | None:
+        """
+        Private helper to read a product by ID for a user, checking access levels.
+        Returns the Products ORM instance or None.
+        """
+        statement: Select = ( # Explicitly type 'statement' for clarity
             select(Products)
-            .join(ProductAccessRights)
+            .join(ProductAccessRights, Products.product_id == ProductAccessRights.product_id)
             .where(ProductAccessRights.user_id == user_id)
+            .where(Products.product_id == product_id)
         )
-        products = (await session.execute(query)).scalars().all()
-        return [orm_to_pydantic(product, ProductResponse) for product in products]
+        if access_levels:
+            statement = statement.where(ProductAccessRights.access_level.in_(access_levels))
+        
+        if with_for_update:
+            # Applying FOR UPDATE to the Products table in the context of this join
+            statement = statement.with_for_update(of=Products)
 
+        result = await session.exec(statement)
+        return result.first()
 
-async def _read_product(
-    session: AsyncSession,
-    user_id: int,
-    product_id: int,
-    access_levels: list[AccessLevels] | None = None,
-    *,
-    with_for_update: bool = False,
-) -> Products:
-    """Read product by ID.
+    async def get_product_for_user(
+        self, user_id: int, product_id: int, access_levels: list[AccessLevels] | None = None
+    ) -> Products | None:
+        """
+        Read a specific product by ID for a user, optionally checking access levels.
 
-    :param session: Session to use to query the database.
-    :param user_id: ID of the user requesting the product.
-    :param product_id: ID of the product to read.
-    :param access_levels: Access level required.
-    :param with_for_update: Lock the document for update.
-    :return: Matching product.
-    :raises: HTTPException if no product is found.
-    """
-    query = (
-        select(Products)
-        .join(ProductAccessRights)
-        .where(ProductAccessRights.user_id == user_id)
-        .where(Products.product_id == product_id)
-    )
-    if access_levels:
-        query = query.where(ProductAccessRights.access_level.in_(access_levels))
-    if with_for_update:
-        query = query.with_for_update()
-    result = await session.execute(query)
-    product = result.scalars().first()
-    if not product:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Product not found.",
-        )
-    return product
-
-
-async def read_product(user_id: int, product_id: int) -> ProductResponse:
-    """Read product by ID.
-
-    :param user_id: ID of the user requesting the product.
-    :param product_id: ID of the product to read.
-    :return: Matching product.
-    """
-    async with AsyncSessionLocal() as session, session.begin():
-        return orm_to_pydantic(
-            await _read_product(
+        :param user_id: ID of the user requesting the product.
+        :param product_id: ID of the product to read.
+        :param access_levels: Optional list of access levels required.
+        :return: Matching Products ORM instance or None. Repository should not raise HTTPExceptions.
+        """
+        async with AsyncSessionLocal() as session:
+            product = await self._get_product_for_user_with_access_check(
                 session=session,
                 user_id=user_id,
                 product_id=product_id,
-            ),
-            ProductResponse,
-        )
+                access_levels=access_levels,
+            )
+            return product
 
+    async def update_product_for_user(
+        self,
+        user_id: int,
+        product_id: int,
+        product_update_data: ProductUpdateSchema,
+    ) -> Products | None:
+        """
+        Update a product for a user, checking 'MANAGE' or 'WRITE' access.
+        Repository should not raise HTTPExceptions.
 
-async def update_product(
-    user_id: int,
-    product_id: int,
-    product: ProductUpdate,
-) -> ProductResponse:
-    """Update product.
+        :param user_id: ID of the user updating the product.
+        :param product_id: ID of the product to update.
+        :param product_update_data: Data to update the product with (Pydantic model).
+        :return: Updated Products ORM instance or None if not found or no access.
+        """
+        async with AsyncSessionLocal() as session:
+            product_to_update = await self._get_product_for_user_with_access_check(
+                session=session,
+                user_id=user_id,
+                product_id=product_id,
+                access_levels=[AccessLevels.MANAGE, AccessLevels.WRITE],
+                with_for_update=True, 
+            )
 
-    :param user_id: ID of the user updating the product.
-    :param product_id: ID of the product to update.
-    :param product: Product to update.
-    :return: Updated product.
-    :raises: HTTPException if no product ID is found.
-    """
-    if not product_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Product ID must be specified to update a product.",
-        )
+            if not product_to_update:
+                return None 
 
-    async with AsyncSessionLocal() as session, session.begin():
-        existing_product = await _read_product(
-            session=session,
-            user_id=user_id,
-            product_id=product_id,
-            access_levels=[AccessLevels.MANAGE, AccessLevels.WRITE],
-            with_for_update=True,
-        )
+            update_data = product_update_data.model_dump(exclude_unset=True)
+            for key, value in update_data.items():
+                setattr(product_to_update, key, value)
+            
+            session.add(product_to_update)
+            await session.commit()
+            await session.refresh(product_to_update)
+            return product_to_update
 
-        # Update fields of the existing product.
-        for key, value in product.__dict__.items():
-            if value:
-                setattr(existing_product, key, value)
+    async def delete_product_for_user(
+        self,
+        user_id: int,
+        product_id: int,
+    ) -> Products | None:
+        """
+        Delete a product for a user, checking 'MANAGE' access.
+        Repository should not raise HTTPExceptions.
 
-        session.add(existing_product)
-        await session.commit()
+        :param user_id: ID of the user deleting the product.
+        :param product_id: ID of the product to delete.
+        :return: The deleted Products ORM instance or None if not found or no access.
+        """
+        async with AsyncSessionLocal() as session:
+            product_to_delete = await self._get_product_for_user_with_access_check(
+                session=session,
+                user_id=user_id,
+                product_id=product_id,
+                access_levels=[AccessLevels.MANAGE],
+            )
 
-        return orm_to_pydantic(existing_product, ProductResponse)
-
-
-async def delete_product(
-    user_id: int,
-    product_id: int,
-) -> None:
-    """Delete a product.
-
-    :param user_id: ID of the user deleting the product.
-    :param product_id: ID of the product to delete.
-    """
-    async with AsyncSessionLocal() as session, session.begin():
-        product = await _read_product(
-            session=session,
-            user_id=user_id,
-            product_id=product_id,
-            access_levels=[AccessLevels.MANAGE],
-        )
-        await session.delete(product)
+            if not product_to_delete:
+                return None
+            
+            await session.delete(product_to_delete)
+            await session.commit()
+            return product_to_delete
