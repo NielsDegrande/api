@@ -60,7 +60,7 @@ build_test:
 	docker build \
 		--file Dockerfile \
 		--target test \
-		--tag api-test  \
+		--tag api-test \
 		--cache-from=api-bare \
 		--cache-from=api \
 		--cache-from=api-test \
