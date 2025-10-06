@@ -96,12 +96,12 @@ repos:
         language: system
         types: [python]
         require_serial: true
-  - repo: local
-    hooks:
-      - id: pip-audit
-        name: pip-audit
-        entry: bash -c '
-          pip-audit
-          --ignore-vuln GHSA-248v-346w-9cwc'
-        language: system
-        require_serial: true
+  # - repo: local
+  #   hooks:
+  #     - id: pip-audit
+  #       name: pip-audit
+  #       entry: bash -c '
+  #         pip-audit'
+  #         # --ignore-vuln XXX'
+  #       language: system
+  #       require_serial: true

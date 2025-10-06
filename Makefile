@@ -9,14 +9,15 @@ help:
 ## install: Install dependencies.
 .PHONY: install
 install:
+	uv venv
 	uv sync --no-dev
 
 ## install_dev: Install dependencies for development.
 .PHONY: install_dev
 install_dev:
+	uv venv
 	uv sync --group dev --group test
-	# Installs the pre-commit hook.
-	. .venv/bin/activate && pre-commit install
+	uv run pre-commit install
 
 ## build_base_bare: Build the base image without any dependencies.
 .PHONY: build_base_bare
