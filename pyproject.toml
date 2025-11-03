@@ -17,7 +17,7 @@ dependencies = [
     "google-cloud-storage==3.4.1",
     "pydantic==2.12.3",
     "python-box==7.3.2",
-    "python-dotenv==1.1.1",
+    "python-dotenv==1.2.1",
     "pyyaml==6.0.3",
     "sqlalchemy[asyncio]==2.0.44",
     "uvicorn[standard]==0.38.0",
