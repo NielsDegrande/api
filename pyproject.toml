@@ -12,7 +12,7 @@ dependencies = [
     "asyncpg==0.30.0",
     "bcrypt==5.0.0",
     "coloredlogs==15.0.1",
-    "fastapi==0.121.1",
+    "fastapi==0.121.2",
     "gcloud-aio-storage==9.6.0",
     "google-cloud-storage==3.5.0",
     "pydantic==2.12.4",
