@@ -215,7 +215,7 @@ requires-dist = [
     { name = "bcrypt", specifier = "==5.0.0" },
     { name = "coloredlogs", specifier = "==15.0.1" },
     { name = "fastapi", specifier = "==0.135.1" },
-    { name = "gcloud-aio-storage", specifier = "==9.6.1" },
+    { name = "gcloud-aio-storage", specifier = "==9.6.4" },
     { name = "google-cloud-storage", specifier = "==3.9.0" },
     { name = "pydantic", specifier = "==2.12.5" },
     { name = "python-box", specifier = "==7.4.1" },
@@ -836,7 +836,7 @@ wheels = [
 
 [[package]]
 name = "gcloud-aio-auth"
-version = "5.4.2"
+version = "5.4.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -845,14 +845,14 @@ dependencies = [
     { name = "cryptography" },
     { name = "pyjwt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c3/44/feaf6e52da4d98140917b0d52d86e4724b7323c13a00442fd0f8158f6370/gcloud_aio_auth-5.4.2.tar.gz", hash = "sha256:184478d081f7cfbb6eff421c22d877d48d17811fa88b269f0c016f5528b3fa31", size = 13998, upload-time = "2025-05-24T00:50:42.321Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6e/15/a3acb1393934d4909efe75c69fe94536c592ff5953f03922d20186fe4fb1/gcloud_aio_auth-5.4.4.tar.gz", hash = "sha256:70b8c6edf8655003251905372e6815a24ab839bf201788a903964570e9b4091f", size = 13851, upload-time = "2026-02-26T16:38:55.11Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ca/2c/c72ba3433002909804a36aad87ddca2aa5a36b4a25c366178631d8f97385/gcloud_aio_auth-5.4.2-py3-none-any.whl", hash = "sha256:3adfb6ee5cae4226689fd096ce127e99ee5216623577215abb02ef6722574563", size = 16560, upload-time = "2025-05-24T00:50:41.327Z" },
+    { url = "https://files.pythonhosted.org/packages/43/62/e25afa9e88260230b654a44a8aed75e43cea0dd1e67e43fb7b9a9a7e49e9/gcloud_aio_auth-5.4.4-py3-none-any.whl", hash = "sha256:aa4795365a1f9fdeec9b30e5616f87a95b00d76db60da530d12487c846d2a419", size = 16353, upload-time = "2026-02-26T16:38:56.151Z" },
 ]
 
 [[package]]
 name = "gcloud-aio-storage"
-version = "9.6.1"
+version = "9.6.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -860,9 +860,9 @@ dependencies = [
     { name = "pyasn1-modules" },
     { name = "rsa" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/06/c4/fb8b9d2289b8b8758c91c2eb0a860d8fcd2e04c5e91e4708eec8a0d720a4/gcloud_aio_storage-9.6.1.tar.gz", hash = "sha256:e3e621ab5e870d29384a0a7935ac68af12dd19caf93f1c91b0bc70f939333bfb", size = 14617, upload-time = "2025-11-07T19:01:19.338Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cc/05/34fc05ccbdab83962d42227d260157f59255f88becb866433cef7727ce82/gcloud_aio_storage-9.6.4.tar.gz", hash = "sha256:4da741e9e45f0ab5f57aa9ba2d46032dde4b80f3eb0a03de31ac741add420485", size = 14613, upload-time = "2026-02-26T17:47:15.024Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/d3/9f7ef4954fc705df86e156d632b044001e70d5be4626ad2c4d1903e8fcf5/gcloud_aio_storage-9.6.1-py3-none-any.whl", hash = "sha256:6881f573df586821dfd456f7ded3d94f326a82197adca15d52acc789c3621df3", size = 17412, upload-time = "2025-11-07T19:01:18.218Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/70/b40dd004721f450995b368453e673b6ee23743f9de56fe5570c514622433/gcloud_aio_storage-9.6.4-py3-none-any.whl", hash = "sha256:a3b8af75e98485325cee80443a6f3e74f8efa7ed6ed10697db163682390cc1e4", size = 17383, upload-time = "2026-02-26T17:47:16.006Z" },
 ]
 
 [[package]]
