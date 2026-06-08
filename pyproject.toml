@@ -14,7 +14,7 @@ dependencies = [
     "coloredlogs==15.0.1",
     "fastapi==0.136.3",
     "gcloud-aio-storage==9.6.4",
-    "google-cloud-storage==3.10.1",
+    "google-cloud-storage==3.11.0",
     "pydantic==2.13.4",
     "python-box==7.4.1",
     "python-dotenv==1.2.2",
