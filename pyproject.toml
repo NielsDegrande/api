@@ -42,7 +42,7 @@ dev = [
 ]
 test = [
     "httpx==0.28.1",
-    "pip-audit==2.10.0",
+    "pip-audit==2.10.1",
     "pre-commit==4.6.0",
     "pyright==1.1.410",
     "pytest==9.1.0",
