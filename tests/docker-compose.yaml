@@ -1,6 +1,6 @@
 services:
   test_db:
-    image: postgres:latest
+    image: postgres:18
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: postgres
