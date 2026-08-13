@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING, ClassVar
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (
     Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
+    mapped_column,
     relationship,
 )
 
@@ -39,9 +38,7 @@ class ProductAccessRights(Base):
         ),
         nullable=False,
     )
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    concept: Mapped["Products"] = relationship(  # pyright: ignore[reportAssignmentType]
+    concept: Mapped[Products] = relationship(
         "Products",
     )
 
@@ -53,8 +50,6 @@ class ProductAccessRights(Base):
         ),
         nullable=False,
     )
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    user: Mapped["Users"] = relationship(  # pyright: ignore[reportAssignmentType]
+    user: Mapped[Users] = relationship(
         "Users",
     )

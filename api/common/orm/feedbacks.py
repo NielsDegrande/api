@@ -6,8 +6,7 @@ from typing import TYPE_CHECKING, ClassVar
 from sqlalchemy import Column, DateTime, ForeignKey
 from sqlalchemy.orm import (
     Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
+    mapped_column,
     relationship,
 )
 
@@ -46,9 +45,7 @@ class Feedbacks(Base):
         # Put an index on columns you will filter by often.
         index=True,
     )
-    # Pyright error: Expression of type "relationship"
-    # cannot be assigned to declared type.
-    user: Mapped["Users"] = relationship(  # pyright: ignore[reportAssignmentType]
+    user: Mapped[Users] = relationship(
         "Users",
         back_populates="feedbacks",
     )

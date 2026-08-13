@@ -1,0 +1,6 @@
+# Match the existing TOML style: four-space indentation and spaced arrays.
+[formatting]
+array_auto_collapse = false
+compact_arrays = false
+indent_string = "    "
+reorder_keys = false

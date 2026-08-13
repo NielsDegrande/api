@@ -79,7 +79,7 @@ run_pre_commit: build_test
 ## run_tests: Run tests.
 .PHONY: run_tests
 run_tests: build_test
-	cd tests; docker-compose up --exit-code-from api
+	cd tests; docker compose up --exit-code-from api
 
 ## run_container: Run container.
 .PHONY: run_container

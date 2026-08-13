@@ -5,8 +5,7 @@ import sys
 from box import Box
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import (
-    # "async_sessionmaker" is unknown import symbol.
-    async_sessionmaker,  # pyright: ignore[reportAttributeAccessIssue]
+    async_sessionmaker,
     create_async_engine,
 )
 from sqlalchemy.pool import (
@@ -55,8 +54,7 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 def orm_to_pydantic[TPydanticModel: BaseModel](
-    # Pyright warning: Variable not allowed in type expression.
-    orm_object: Base,  # pyright: ignore[reportInvalidTypeForm]
+    orm_object: Base,
     pydantic_class: type[TPydanticModel],
 ) -> TPydanticModel:
     """Convert an ORM object to a Pydantic object.
@@ -68,10 +66,7 @@ def orm_to_pydantic[TPydanticModel: BaseModel](
     return pydantic_class.model_validate(orm_object, from_attributes=True)
 
 
-def pydantic_to_orm[
-    # Pyright warning: Variable not allowed in type expression.
-    TORMModel: Base,  # pyright: ignore[reportInvalidTypeForm]
-](
+def pydantic_to_orm[TORMModel: Base](
     pydantic_object: BaseModel,
     orm_class: type[TORMModel],
 ) -> TORMModel:

@@ -28,16 +28,24 @@ repos:
     hooks:
       - id: markdownlint
         args: ["--ignore", "docs/_*.md"]
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v10.8.1
+  # Use the npm distribution of taplo: it is a WASM build,
+  # so it works on any architecture, unlike the PyPI wheels.
+  - repo: local
     hooks:
-      - id: eslint
-        additional_dependencies:
-          - eslint@8.47.0
-          - eslint-plugin-toml@0.5.0
-        files: \.toml$ # Only lint toml files
-        types: [file]
-        args: ["--fix"]
+      - id: taplo-format
+        name: taplo-format
+        entry: taplo format
+        language: node
+        additional_dependencies: ["@taplo/cli@0.7.0"]
+        types: [toml]
+      - id: taplo-lint
+        name: taplo-lint
+        entry: taplo lint
+        # Avoid fetching remote schema catalogs.
+        args: ["--no-schema"]
+        language: node
+        additional_dependencies: ["@taplo/cli@0.7.0"]
+        types: [toml]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.2
     hooks:
@@ -79,10 +87,6 @@ repos:
     rev: "v0.7.1"
     hooks:
       - id: uv-sort
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
-    hooks:
-      - id: pyupgrade
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.0
     hooks:

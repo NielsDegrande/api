@@ -7,7 +7,7 @@ from api.common.orm.users import Users
 from api.sample.dto.access_right import ProductAccessRightResponse
 from api.sample.orm.access_rights import ProductAccessRights
 from api.utils.constants import AccessLevels
-from api.utils.database import AsyncSessionLocal, orm_to_pydantic
+from api.utils.database import AsyncSessionLocal
 
 
 async def create_access_right(
@@ -40,8 +40,13 @@ async def create_access_right(
     async with AsyncSessionLocal() as session, session.begin():
         session.add(access_right_orm)
         await session.commit()
-        access_right_orm.username = user.username
-        return orm_to_pydantic(access_right_orm, ProductAccessRightResponse)
+        return ProductAccessRightResponse(
+            access_right_id=access_right_orm.access_right_id,
+            user_id=access_right_orm.user_id,
+            username=user.username,
+            product_id=access_right_orm.product_id,
+            access_level=access_right_orm.access_level,
+        )
 
 
 async def _read_access_right(
@@ -73,6 +78,6 @@ async def _read_access_right(
                 user_id=access_right.user_id,
                 username=user_name,
                 product_id=access_right.product_id,
-                access_level=access_right.access_right,
+                access_level=access_right.access_level,
             )
         return None

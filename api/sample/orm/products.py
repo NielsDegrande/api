@@ -4,8 +4,7 @@ from typing import ClassVar
 
 from sqlalchemy.orm import (
     Mapped,
-    # Pyright error: "mapped_column" is unknown import symbol.
-    mapped_column,  # pyright: ignore[reportAttributeAccessIssue]
+    mapped_column,
 )
 
 from api.common.orm.base import Base
