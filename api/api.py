@@ -1,7 +1,6 @@
 """Main object of the API."""
 
 import logging
-import os
 import traceback
 from pathlib import Path
 
@@ -113,11 +112,12 @@ async def catch_all(full_path: str) -> FileResponse:
     :param full_path: Path of the requested file, relative to the UI directory.
     :return: When we reach this part of the routing precedence, return index.html.
     """
-    ui_directory_path = Path(UI_DIRECTORY)
-    file_path = ui_directory_path / full_path
+    # Blocking path resolution is acceptable here: local and fast.
+    ui_directory_path = Path(UI_DIRECTORY).resolve()  # noqa: ASYNC240
+    file_path = (ui_directory_path / full_path).resolve()
 
-    # Avoid path traversal attacks by checking we are inside folder.
-    if os.path.commonpath([ui_directory_path, file_path]) != UI_DIRECTORY:
+    # Avoid path traversal attacks by checking we stay inside the UI folder.
+    if not file_path.is_relative_to(ui_directory_path):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
     if Path.is_file(file_path):
