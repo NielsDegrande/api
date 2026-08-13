@@ -1,13 +1,17 @@
-FROM python:3.13 AS base_bare
+FROM python:3.14-slim AS base_bare
 
 LABEL NAME=api
 LABEL VERSION=1.0.0
 
 WORKDIR /app
 
-# Install uv, do this before copying files for caching purposes.
-RUN pip install --no-cache-dir --upgrade pip
-RUN pip install --no-cache-dir uv
+# Install uv by copying its static binary from the official distroless image.
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Install curl for the health check.
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy pyproject.toml, uv.lock and README.md files.
 COPY pyproject.toml uv.lock README.md ./
@@ -15,7 +19,7 @@ COPY api/__init__.py api/__init__.py
 
 # Install dependencies.
 ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
-RUN uv sync
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen
 
 # Expose the server.
 EXPOSE 80
@@ -34,16 +38,22 @@ ENTRYPOINT ["bash", "scripts/start.sh"]
 # Copy all other files here to optimize caching.
 COPY ./ ./
 
+# Run the API as a non-root user.
+RUN useradd --create-home api \
+    && chown -R api:api /app
+USER api
+
 
 FROM base_bare AS test
 
-# Dependencies for pre-commit.
+# Dependencies for pre-commit and its hooks.
+# Node-based hooks require libatomic1.
 RUN apt-get update \
-    && apt-get install shellcheck -y \
-    && apt-get clean
+    && apt-get install --no-install-recommends -y git libatomic1 shellcheck \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies with dev and test extras.
-RUN uv sync --group dev --group test
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --group dev --group test
 COPY .pre-commit-config.yaml .pre-commit-config.yaml
 
 # Install pre-commit hooks.
