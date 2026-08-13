@@ -8,7 +8,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - pgdata_transactional_template:/var/lib/postgresql/data
+      # Postgres 18+ images store data per major version under /var/lib/postgresql.
+      - pgdata_transactional_template:/var/lib/postgresql
 
 volumes:
   # Transactional database to support the API.

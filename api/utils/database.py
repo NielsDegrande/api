@@ -1,7 +1,6 @@
 """Database utilities."""
 
 import sys
-from typing import TypeVar
 
 from box import Box
 from pydantic import BaseModel
@@ -55,19 +54,11 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 
-TypeVarBaseModel = TypeVar("TypeVarBaseModel", bound=BaseModel)
-# Pyright warning: Variable not allowed in type expression.
-TypeVarORMModel = TypeVar(
-    "TypeVarORMModel",
-    bound=Base,  # pyright: ignore[reportInvalidTypeForm]
-)
-
-
-def orm_to_pydantic(
-    # Pyright warning: TypeVar appears only once in generic function signature.
-    orm_object: TypeVarORMModel,  # pyright: ignore[reportInvalidTypeVarUse]
-    pydantic_class: type[TypeVarBaseModel],
-) -> TypeVarBaseModel:
+def orm_to_pydantic[TPydanticModel: BaseModel](
+    # Pyright warning: Variable not allowed in type expression.
+    orm_object: Base,  # pyright: ignore[reportInvalidTypeForm]
+    pydantic_class: type[TPydanticModel],
+) -> TPydanticModel:
     """Convert an ORM object to a Pydantic object.
 
     :param orm_object: ORM object to convert.
@@ -77,10 +68,13 @@ def orm_to_pydantic(
     return pydantic_class.model_validate(orm_object, from_attributes=True)
 
 
-def pydantic_to_orm(
+def pydantic_to_orm[
+    # Pyright warning: Variable not allowed in type expression.
+    TORMModel: Base,  # pyright: ignore[reportInvalidTypeForm]
+](
     pydantic_object: BaseModel,
-    orm_class: type[TypeVarORMModel],
-) -> TypeVarORMModel:
+    orm_class: type[TORMModel],
+) -> TORMModel:
     """Convert a Pydantic object to an ORM object.
 
     :param pydantic_object: Pydantic object to convert.
