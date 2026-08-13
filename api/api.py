@@ -57,7 +57,7 @@ async def exception_handler(request: Request, error: Exception) -> JSONResponse:
     :param error: Exception raised by application
     :return: Response to client
     """
-    log_.exception(traceback.format_exc())
+    log_.error(traceback.format_exc())
     content = {
         "message": "Something went wrong.",
         "url": str(request.url),
@@ -96,24 +96,25 @@ api.include_router(
 
 
 @api.get("/api/{full_path:path}", include_in_schema=False)
-async def catch_api_all() -> FileResponse:
+async def catch_api_all(full_path: str) -> FileResponse:
     """Return 404 for non-existent api endpoints.
 
+    :param full_path: Path of the non-existent API endpoint.
     :return: When we reach this part of the routing precedence, return 404.
     """
+    del full_path  # Only used for routing.
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
 
 @api.get("/{full_path:path}", include_in_schema=False)
-async def catch_all(request: Request) -> FileResponse:
+async def catch_all(full_path: str) -> FileResponse:
     """Serve the index.html as a template.
 
-    :param request: Request received by API.
+    :param full_path: Path of the requested file, relative to the UI directory.
     :return: When we reach this part of the routing precedence, return index.html.
     """
     ui_directory_path = Path(UI_DIRECTORY)
-    relative_file_path = request.path_params["full_path"]
-    file_path = ui_directory_path / relative_file_path
+    file_path = ui_directory_path / full_path
 
     # Avoid path traversal attacks by checking we are inside folder.
     if os.path.commonpath([ui_directory_path, file_path]) != UI_DIRECTORY:
