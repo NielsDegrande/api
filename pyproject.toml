@@ -19,7 +19,7 @@ dependencies = [
     "python-box==7.4.1",
     "python-dotenv==1.2.3",
     "pyyaml==6.0.3",
-    "sqlalchemy[asyncio]==2.0.52",
+    "sqlalchemy[asyncio]==2.0.54",
     "uvicorn[standard]==0.53.0",
 ]
 
