@@ -13,7 +13,7 @@ dependencies = [
     "bcrypt==5.0.0",
     "coloredlogs==15.0.1",
     "fastapi==0.142.2",
-    "gcloud-aio-storage==9.6.4",
+    "gcloud-aio-storage==9.6.5",
     "google-cloud-storage==3.17.0",
     "pydantic==2.13.5",
     "python-box==7.4.1",
