@@ -15,7 +15,7 @@ dependencies = [
     "fastapi==0.142.2",
     "gcloud-aio-storage==9.6.4",
     "google-cloud-storage==3.17.0",
-    "pydantic==2.13.5",
+    "pydantic==2.14.0",
     "python-box==7.4.1",
     "python-dotenv==1.2.4",
     "pyyaml==6.0.3",
