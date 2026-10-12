@@ -188,7 +188,7 @@ requires-dist = [
     { name = "bcrypt", specifier = "==5.0.0" },
     { name = "coloredlogs", specifier = "==15.0.1" },
     { name = "fastapi", specifier = "==0.142.2" },
-    { name = "gcloud-aio-storage", specifier = "==9.6.4" },
+    { name = "gcloud-aio-storage", specifier = "==9.6.5" },
     { name = "google-cloud-storage", specifier = "==3.17.0" },
     { name = "pydantic", specifier = "==2.14.0" },
     { name = "python-box", specifier = "==7.4.1" },
@@ -872,17 +872,16 @@ wheels = [
 
 [[package]]
 name = "gcloud-aio-storage"
-version = "9.6.4"
+version = "9.6.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
+    { name = "cryptography" },
     { name = "gcloud-aio-auth" },
-    { name = "pyasn1-modules" },
-    { name = "rsa" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cc/05/34fc05ccbdab83962d42227d260157f59255f88becb866433cef7727ce82/gcloud_aio_storage-9.6.4.tar.gz", hash = "sha256:4da741e9e45f0ab5f57aa9ba2d46032dde4b80f3eb0a03de31ac741add420485", size = 14613, upload-time = "2026-02-26T17:47:15.024Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/15/be/528ac1d1506eaf4526c2c0039d68dec99b243d50a556cd688968d1498e1a/gcloud_aio_storage-9.6.5.tar.gz", hash = "sha256:44a9529e429d7460f1a55b49a0f77906d988ee68483513abb3c0d66dedf43abd", size = 14309, upload-time = "2026-10-02T12:59:14.278Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/70/b40dd004721f450995b368453e673b6ee23743f9de56fe5570c514622433/gcloud_aio_storage-9.6.4-py3-none-any.whl", hash = "sha256:a3b8af75e98485325cee80443a6f3e74f8efa7ed6ed10697db163682390cc1e4", size = 17383, upload-time = "2026-02-26T17:47:16.006Z" },
+    { url = "https://files.pythonhosted.org/packages/c3/7d/88c82ec77bbf867734011fa4292c69b11e27c823db3dfb55879e5dbd139f/gcloud_aio_storage-9.6.5-py3-none-any.whl", hash = "sha256:07bf233a065539bebbd1a34ce61505d6dba2b6674f23f8e0319606d2f01111ab", size = 17005, upload-time = "2026-10-02T12:59:15.309Z" },
 ]
 
 [[package]]
@@ -2006,18 +2005,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c0/8f/0722ca900cc807c13a6a0c696dacf35430f72e0ec571c4275d2371fca3e9/rich-15.0.0.tar.gz", hash = "sha256:edd07a4824c6b40189fb7ac9bc4c52536e9780fbbfbddf6f1e2502c31b068c36", size = 230680, upload-time = "2026-04-12T08:24:00.75Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/82/3b/64d4899d73f91ba49a8c18a8ff3f0ea8f1c1d75481760df8c68ef5235bf5/rich-15.0.0-py3-none-any.whl", hash = "sha256:33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb", size = 310654, upload-time = "2026-04-12T08:24:02.83Z" },
-]
-
-[[package]]
-name = "rsa"
-version = "4.9.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pyasn1" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/da/8a/22b7beea3ee0d44b1916c0c1cb0ee3af23b700b6da9f04991899d0c555d4/rsa-4.9.1.tar.gz", hash = "sha256:e7bdbfdb5497da4c07dfd35530e1a902659db6ff241e39d9953cad06ebd0ae75", size = 29034, upload-time = "2025-04-16T09:51:18.218Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/64/8d/0133e4eb4beed9e425d9a98ed6e081a55d195481b7632472be1af08d2f6b/rsa-4.9.1-py3-none-any.whl", hash = "sha256:68635866661c6836b8d39430f97a996acbd61bfa49406748ea243539fe239762", size = 34696, upload-time = "2025-04-16T09:51:17.142Z" },
 ]
 
 [[package]]
